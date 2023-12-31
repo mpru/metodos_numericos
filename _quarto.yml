@@ -2,7 +2,7 @@ project:
   type: book
 
 book:
-  title: "Métodos Numéricos"
+  title: "Métodos Numéricos con Python"
   author: "Marcos Prunello"
   date: today
   chapters:
