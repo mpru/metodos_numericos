@@ -6,4 +6,6 @@ Estos apuntes no están libres de contener errores. Sugerencias para corregirlos
 
 En general, no se cuenta con derechos para las imágenes empleadas (a menos que sean de creación propia). Ante cualquier problema, contactar al autor.
 
+La asignatura se complementa con variados materiales (prácticas, ejemplos, proyectos) no disponibles en este repositorio.
+
 Primera publicación: enero 2024.

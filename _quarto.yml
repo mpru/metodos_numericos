@@ -2,9 +2,9 @@ project:
   type: book
 
 book:
-  title: "metodos_numericos"
-  author: "Norah Jones"
-  date: "12/31/2023"
+  title: "Métodos Numéricos"
+  author: "Marcos Prunello"
+  date: today
   chapters:
     - index.qmd
     - intro.qmd
@@ -21,3 +21,5 @@ format:
 
 editor: visual
 
+execute:
+  freeze: auto
