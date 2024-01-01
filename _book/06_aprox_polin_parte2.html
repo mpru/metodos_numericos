@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Métodos Numéricos con Python - 1&nbsp; Aproximación polinomial - Parte 2: Derivación e integración</title>
+<title>Métodos Numéricos con Python - 7&nbsp; Aproximación polinomial - Parte 2: Derivación e integración</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./index.html" rel="prev">
+<link href="./06_aprox_polin_parte1.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -121,7 +121,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./06_aprox_polin_parte2.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Aproximación polinomial - Parte 2: Derivación e integración</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./06_aprox_polin_parte2.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Aproximación polinomial - Parte 2: Derivación e integración</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -175,8 +175,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./01_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Conceptos básicos de análisis numérico</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_ecuaciones.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Resolución de ecuaciones en una variable</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_sistemas_lineales.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Resolución de sistemas de ecuaciones lineales</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_sistemasnolineales.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Resolución de sistemas de ecuaciones no lineales y optimización</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_autovalores.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Valores y vectores propios</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_aprox_polin_parte1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Aproximación polinomial - Parte 1: interpolación</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./06_aprox_polin_parte2.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Aproximación polinomial - Parte 2: Derivación e integración</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Aproximación polinomial - Parte 2: Derivación e integración</span></span></a>
   </div>
 </li>
     </ul>
@@ -189,18 +225,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
-  <li><a href="#diferenciación-numérica" id="toc-diferenciación-numérica" class="nav-link active" data-scroll-target="#diferenciación-numérica"><span class="header-section-number">1.1</span> Diferenciación numérica</a>
+  <li><a href="#diferenciación-numérica" id="toc-diferenciación-numérica" class="nav-link active" data-scroll-target="#diferenciación-numérica"><span class="header-section-number">7.1</span> Diferenciación numérica</a>
   <ul class="collapse">
-  <li><a href="#fórmula-general" id="toc-fórmula-general" class="nav-link" data-scroll-target="#fórmula-general"><span class="header-section-number">1.1.1</span> Fórmula general</a></li>
-  <li><a href="#fórmulas-de-tres-puntos" id="toc-fórmulas-de-tres-puntos" class="nav-link" data-scroll-target="#fórmulas-de-tres-puntos"><span class="header-section-number">1.1.2</span> Fórmulas de tres puntos</a></li>
-  <li><a href="#inestabilidad-del-error-de-redondeo" id="toc-inestabilidad-del-error-de-redondeo" class="nav-link" data-scroll-target="#inestabilidad-del-error-de-redondeo"><span class="header-section-number">1.1.3</span> Inestabilidad del error de redondeo</a></li>
+  <li><a href="#fórmula-general" id="toc-fórmula-general" class="nav-link" data-scroll-target="#fórmula-general"><span class="header-section-number">7.1.1</span> Fórmula general</a></li>
+  <li><a href="#fórmulas-de-tres-puntos" id="toc-fórmulas-de-tres-puntos" class="nav-link" data-scroll-target="#fórmulas-de-tres-puntos"><span class="header-section-number">7.1.2</span> Fórmulas de tres puntos</a></li>
+  <li><a href="#inestabilidad-del-error-de-redondeo" id="toc-inestabilidad-del-error-de-redondeo" class="nav-link" data-scroll-target="#inestabilidad-del-error-de-redondeo"><span class="header-section-number">7.1.3</span> Inestabilidad del error de redondeo</a></li>
   </ul></li>
-  <li><a href="#integración-numérica" id="toc-integración-numérica" class="nav-link" data-scroll-target="#integración-numérica"><span class="header-section-number">1.2</span> Integración numérica</a>
+  <li><a href="#integración-numérica" id="toc-integración-numérica" class="nav-link" data-scroll-target="#integración-numérica"><span class="header-section-number">7.2</span> Integración numérica</a>
   <ul class="collapse">
-  <li><a href="#fórmulas-comunes-y-cerradas-de-newton-cotes" id="toc-fórmulas-comunes-y-cerradas-de-newton-cotes" class="nav-link" data-scroll-target="#fórmulas-comunes-y-cerradas-de-newton-cotes"><span class="header-section-number">1.2.1</span> Fórmulas comunes y cerradas de Newton-Cotes</a></li>
-  <li><a href="#fórmulas-compuestas-de-newton-cotes" id="toc-fórmulas-compuestas-de-newton-cotes" class="nav-link" data-scroll-target="#fórmulas-compuestas-de-newton-cotes"><span class="header-section-number">1.2.2</span> Fórmulas compuestas de Newton-Cotes</a></li>
-  <li><a href="#métodos-de-cuadratura-adaptable-o-integración-adaptativa" id="toc-métodos-de-cuadratura-adaptable-o-integración-adaptativa" class="nav-link" data-scroll-target="#métodos-de-cuadratura-adaptable-o-integración-adaptativa"><span class="header-section-number">1.2.3</span> Métodos de cuadratura adaptable o integración adaptativa</a></li>
-  <li><a href="#ejemplos-en-python" id="toc-ejemplos-en-python" class="nav-link" data-scroll-target="#ejemplos-en-python"><span class="header-section-number">1.2.4</span> Ejemplos en Python</a></li>
+  <li><a href="#fórmulas-comunes-y-cerradas-de-newton-cotes" id="toc-fórmulas-comunes-y-cerradas-de-newton-cotes" class="nav-link" data-scroll-target="#fórmulas-comunes-y-cerradas-de-newton-cotes"><span class="header-section-number">7.2.1</span> Fórmulas comunes y cerradas de Newton-Cotes</a></li>
+  <li><a href="#fórmulas-compuestas-de-newton-cotes" id="toc-fórmulas-compuestas-de-newton-cotes" class="nav-link" data-scroll-target="#fórmulas-compuestas-de-newton-cotes"><span class="header-section-number">7.2.2</span> Fórmulas compuestas de Newton-Cotes</a></li>
+  <li><a href="#métodos-de-cuadratura-adaptable-o-integración-adaptativa" id="toc-métodos-de-cuadratura-adaptable-o-integración-adaptativa" class="nav-link" data-scroll-target="#métodos-de-cuadratura-adaptable-o-integración-adaptativa"><span class="header-section-number">7.2.3</span> Métodos de cuadratura adaptable o integración adaptativa</a></li>
+  <li><a href="#ejemplos-en-python" id="toc-ejemplos-en-python" class="nav-link" data-scroll-target="#ejemplos-en-python"><span class="header-section-number">7.2.4</span> Ejemplos en Python</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/mpru/metodos_numericos/edit/main/06_aprox_polin_parte2.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mpru/metodos_numericos/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/mpru/metodos_numericos/blob/main/06_aprox_polin_parte2.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></nav>
@@ -210,7 +246,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Aproximación polinomial - Parte 2: Derivación e integración</span></h1>
+<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Aproximación polinomial - Parte 2: Derivación e integración</span></h1>
 </div>
 
 
@@ -227,8 +263,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="diferenciación-numérica" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="diferenciación-numérica"><span class="header-section-number">1.1</span> Diferenciación numérica</h2>
+<section id="diferenciación-numérica" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="diferenciación-numérica"><span class="header-section-number">7.1</span> Diferenciación numérica</h2>
 <ul>
 <li><p>Nos enfrentamos al problema de aproximar el valor de la derivada de una función <span class="math inline">\(f(x)\)</span>.</p></li>
 <li><p>Por definición, la derivada de la función <span class="math inline">\(f\)</span> en <span class="math inline">\(x_0\)</span> es:</p>
@@ -275,8 +311,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   f'(x) \approx \frac{f(x_0+h) - f(x_0)}{h}
   \]</span></p></li>
 </ul>
-<section id="fórmula-general" class="level3" data-number="1.1.1">
-<h3 data-number="1.1.1" class="anchored" data-anchor-id="fórmula-general"><span class="header-section-number">1.1.1</span> Fórmula general</h3>
+<section id="fórmula-general" class="level3" data-number="7.1.1">
+<h3 data-number="7.1.1" class="anchored" data-anchor-id="fórmula-general"><span class="header-section-number">7.1.1</span> Fórmula general</h3>
 <ul>
 <li>Esta idea se puede generalizar para obtener las <strong>fórmulas generales de la aproximación a la derivada</strong>:</li>
 </ul>
@@ -304,8 +340,8 @@ f'(x_j) = \underbrace{\sum_{k=0}^{n} f(x_k) L'_{k}(x)}_{\text{Aproximación}} +
 <li>Las fórmulas más comunes son las de tres y cinco puntos de evaluación. Veremos sólo las de 3.</li>
 </ul>
 </section>
-<section id="fórmulas-de-tres-puntos" class="level3" data-number="1.1.2">
-<h3 data-number="1.1.2" class="anchored" data-anchor-id="fórmulas-de-tres-puntos"><span class="header-section-number">1.1.2</span> Fórmulas de tres puntos</h3>
+<section id="fórmulas-de-tres-puntos" class="level3" data-number="7.1.2">
+<h3 data-number="7.1.2" class="anchored" data-anchor-id="fórmulas-de-tres-puntos"><span class="header-section-number">7.1.2</span> Fórmulas de tres puntos</h3>
 <ul>
 <li><p>Cuando se consideran tres puntos de evaluación, a partir del polinommio interpolante de grado de 2 de Lagrange, la fórmula anterior queda igual a:</p>
 <p><span class="math display">\[
@@ -333,8 +369,8 @@ f'(x_0) = \frac{f(x_0+h) - f(x_0 -h)}{2h} - \frac{h^2}{6} f^{(3)}(\xi), \qquad \
 </ul>
 <!-- AGREGAR EJEMPLO 2022 -->
 </section>
-<section id="inestabilidad-del-error-de-redondeo" class="level3" data-number="1.1.3">
-<h3 data-number="1.1.3" class="anchored" data-anchor-id="inestabilidad-del-error-de-redondeo"><span class="header-section-number">1.1.3</span> Inestabilidad del error de redondeo</h3>
+<section id="inestabilidad-del-error-de-redondeo" class="level3" data-number="7.1.3">
+<h3 data-number="7.1.3" class="anchored" data-anchor-id="inestabilidad-del-error-de-redondeo"><span class="header-section-number">7.1.3</span> Inestabilidad del error de redondeo</h3>
 <ul>
 <li>Para reducir el error de truncamiento necesitamos reducir <span class="math inline">\(h\)</span>.</li>
 <li>Pero se demuestra que conforme <span class="math inline">\(h\)</span> se reduce, el error de redondeo crece.</li>
@@ -343,8 +379,8 @@ f'(x_0) = \frac{f(x_0+h) - f(x_0 -h)}{2h} - \frac{h^2}{6} f^{(3)}(\xi), \qquad \
 </ul>
 </section>
 </section>
-<section id="integración-numérica" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="integración-numérica"><span class="header-section-number">1.2</span> Integración numérica</h2>
+<section id="integración-numérica" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="integración-numérica"><span class="header-section-number">7.2</span> Integración numérica</h2>
 <ul>
 <li>A menudo surge la necesidad de evaluar la integral definida de una función que no tiene una antiderivada o cuya antiderivada no es fácil de obtener (por ejemplo, para calcular probabilidades bajo la distribución normal).</li>
 <li>En estos casos se puede aproximar el valor de la integral mediante los <strong>métodos de cuadratura</strong>.</li>
@@ -376,8 +412,8 @@ f(x)  &amp;= P_n(x) + Error \\\\
 <li>La fórmula anterior es general para cualquier cantidad de nodos <span class="math inline">\(n\)</span>, sean equidistantes o no.</li>
 <li>Cuando se trabaja con nodos igualmente espaciados, esta expresión da lugar a conjunto de fórmulas conocidas como <strong>Fórmulas de integración de Newton-Cotes</strong>.</li>
 </ul>
-<section id="fórmulas-comunes-y-cerradas-de-newton-cotes" class="level3" data-number="1.2.1">
-<h3 data-number="1.2.1" class="anchored" data-anchor-id="fórmulas-comunes-y-cerradas-de-newton-cotes"><span class="header-section-number">1.2.1</span> Fórmulas comunes y cerradas de Newton-Cotes</h3>
+<section id="fórmulas-comunes-y-cerradas-de-newton-cotes" class="level3" data-number="7.2.1">
+<h3 data-number="7.2.1" class="anchored" data-anchor-id="fórmulas-comunes-y-cerradas-de-newton-cotes"><span class="header-section-number">7.2.1</span> Fórmulas comunes y cerradas de Newton-Cotes</h3>
 <ul>
 <li><p>La denominación de “cerradas” hace referencia a que los extremos del intervalo <span class="math inline">\([a, b]\)</span> se incluyen como nodos (están las fórmulas “abiertas” pero no las veremos).</p></li>
 <li><p>La denominación de “comunes” distingue a estas fórmulas de las “compuestas” que veremos en la próxima sección.</p></li>
@@ -398,8 +434,8 @@ f(x)  &amp;= P_n(x) + Error \\\\
 </div>
 </div>
 </div>
-<section id="regla-trapezoidal" class="level4" data-number="1.2.1.1">
-<h4 data-number="1.2.1.1" class="anchored" data-anchor-id="regla-trapezoidal"><span class="header-section-number">1.2.1.1</span> Regla trapezoidal</h4>
+<section id="regla-trapezoidal" class="level4" data-number="7.2.1.1">
+<h4 data-number="7.2.1.1" class="anchored" data-anchor-id="regla-trapezoidal"><span class="header-section-number">7.2.1.1</span> Regla trapezoidal</h4>
 <ul>
 <li>Se consideran sólo dos nodos en el intervalo <span class="math inline">\([a, b]\)</span>.</li>
 <li>En este caso se tiene <span class="math inline">\(a = x_0\)</span> y <span class="math inline">\(b=x_1\)</span> y llamamos <span class="math inline">\(h = x_1 - x_0\)</span>.</li>
@@ -414,8 +450,8 @@ f(x)  &amp;= P_n(x) + Error \\\\
 <li>Recibe el nombre de regla trapezoidal porque cuando <span class="math inline">\(f\)</span> es una función con valores positivos, <span class="math inline">\(\int_a^b f(x) dx\)</span> se aproxima mediante el área de un trapecio. <!-- - El término de error depende de $f''$, por lo que la regla da el resultado exacto cuando se aplica a cualquier función cuya derivada segunda es idénticamente cero --></li>
 </ul>
 </section>
-<section id="regla-de-simpson" class="level4" data-number="1.2.1.2">
-<h4 data-number="1.2.1.2" class="anchored" data-anchor-id="regla-de-simpson"><span class="header-section-number">1.2.1.2</span> Regla de Simpson</h4>
+<section id="regla-de-simpson" class="level4" data-number="7.2.1.2">
+<h4 data-number="7.2.1.2" class="anchored" data-anchor-id="regla-de-simpson"><span class="header-section-number">7.2.1.2</span> Regla de Simpson</h4>
 <ul>
 <li>Resulta de la integración sobre <span class="math inline">\([a, b]\)</span> del segundo polinomio de Lagrange con nodos igualmente espaciados <span class="math inline">\(x_0 = a\)</span>, <span class="math inline">\(x_1 = x_0 +h\)</span> y <span class="math inline">\(x2 = x_0+2h=b\)</span>, es decir: <span class="math inline">\(h=(b-a)/2\)</span>.</li>
 </ul>
@@ -427,8 +463,8 @@ f(x)  &amp;= P_n(x) + Error \\\\
 <li>El término de error queda en función de la cuarta derivada de <span class="math inline">\(f\)</span>, por lo que da resultados exactos cuando <span class="math inline">\(f(x)\)</span> es un polinomio de grado 3 o menos.</li>
 </ul>
 </section>
-<section id="regla-de-tres-octavos-simpson" class="level4" data-number="1.2.1.3">
-<h4 data-number="1.2.1.3" class="anchored" data-anchor-id="regla-de-tres-octavos-simpson"><span class="header-section-number">1.2.1.3</span> Regla de tres octavos Simpson</h4>
+<section id="regla-de-tres-octavos-simpson" class="level4" data-number="7.2.1.3">
+<h4 data-number="7.2.1.3" class="anchored" data-anchor-id="regla-de-tres-octavos-simpson"><span class="header-section-number">7.2.1.3</span> Regla de tres octavos Simpson</h4>
 <ul>
 <li>Resulta de considerar cuatro nodos igualmente espaciados <span class="math inline">\(x_0 = a\)</span>, <span class="math inline">\(x_1 = x_0 +h\)</span>, <span class="math inline">\(x2 = x_0+2h\)</span> y <span class="math inline">\(x_3=x_0+3h=b\)</span> e integrar el polinomio de Lagrange de grado 3 que pasa por ellos</li>
 <li>En este caso: <span class="math inline">\(h=(b-a)/3\)</span>.</li>
@@ -439,8 +475,8 @@ f(x)  &amp;= P_n(x) + Error \\\\
 \]</span></p>
 </section>
 </section>
-<section id="fórmulas-compuestas-de-newton-cotes" class="level3" data-number="1.2.2">
-<h3 data-number="1.2.2" class="anchored" data-anchor-id="fórmulas-compuestas-de-newton-cotes"><span class="header-section-number">1.2.2</span> Fórmulas compuestas de Newton-Cotes</h3>
+<section id="fórmulas-compuestas-de-newton-cotes" class="level3" data-number="7.2.2">
+<h3 data-number="7.2.2" class="anchored" data-anchor-id="fórmulas-compuestas-de-newton-cotes"><span class="header-section-number">7.2.2</span> Fórmulas compuestas de Newton-Cotes</h3>
 <ul>
 <li>En general, el uso de las fórmula de Newton-Cotes es inapropiado sobre largos intervalos de integración, porque se pueden dar situaciones como estas:</li>
 </ul>
@@ -521,8 +557,8 @@ f(x)  &amp;= P_n(x) + Error \\\\
 <p><img src="Plots/U6/interp4.png" class="img-fluid" style="width:60.0%"></p>
 </div>
 </div>
-<section id="regla-trapecial-compuesta" class="level4" data-number="1.2.2.1">
-<h4 data-number="1.2.2.1" class="anchored" data-anchor-id="regla-trapecial-compuesta"><span class="header-section-number">1.2.2.1</span> Regla trapecial compuesta</h4>
+<section id="regla-trapecial-compuesta" class="level4" data-number="7.2.2.1">
+<h4 data-number="7.2.2.1" class="anchored" data-anchor-id="regla-trapecial-compuesta"><span class="header-section-number">7.2.2.1</span> Regla trapecial compuesta</h4>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="Plots/U6/interp3.png" class="img-fluid" style="width:100.0%"></p>
@@ -572,8 +608,8 @@ http://www.wolframalpha.com/widgets/view.jsp?id=8ab70731b1553f17c11a3bbc87e0b605
 
 -->
 </section>
-<section id="regla-de-simpson-compuesta" class="level4" data-number="1.2.2.2">
-<h4 data-number="1.2.2.2" class="anchored" data-anchor-id="regla-de-simpson-compuesta"><span class="header-section-number">1.2.2.2</span> Regla de Simpson compuesta</h4>
+<section id="regla-de-simpson-compuesta" class="level4" data-number="7.2.2.2">
+<h4 data-number="7.2.2.2" class="anchored" data-anchor-id="regla-de-simpson-compuesta"><span class="header-section-number">7.2.2.2</span> Regla de Simpson compuesta</h4>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="Plots/U6/interp5.png" class="img-fluid" style="width:100.0%"></p>
@@ -615,8 +651,8 @@ http://www.wolframalpha.com/widgets/view.jsp?id=8ab70731b1553f17c11a3bbc87e0b605
 <li>El valor exacto es: <span class="math inline">\(\int_0^{6}f(x)dx = 12.2935\)</span>, con lo cual el error relativo de la aproximación con la fórmula compuesta de Simpson fue: <span class="math inline">\(7.3\%\)</span>.</li>
 </ul>
 </section>
-<section id="regla-de-tres-octavos-de-simpson-compuesta" class="level4" data-number="1.2.2.3">
-<h4 data-number="1.2.2.3" class="anchored" data-anchor-id="regla-de-tres-octavos-de-simpson-compuesta"><span class="header-section-number">1.2.2.3</span> Regla de tres octavos de Simpson compuesta</h4>
+<section id="regla-de-tres-octavos-de-simpson-compuesta" class="level4" data-number="7.2.2.3">
+<h4 data-number="7.2.2.3" class="anchored" data-anchor-id="regla-de-tres-octavos-de-simpson-compuesta"><span class="header-section-number">7.2.2.3</span> Regla de tres octavos de Simpson compuesta</h4>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="Plots/U6/interp6.png" class="img-fluid" style="width:100.0%"></p>
@@ -655,8 +691,8 @@ http://www.wolframalpha.com/widgets/view.jsp?id=8ab70731b1553f17c11a3bbc87e0b605
 <li>El valor exacto es: <span class="math inline">\(\int_0^{6}f(x)dx = 12.2935\)</span>, con lo cual el error relativo de la aproximación con la fórmula compuesta de tres octavos de Simpson fue: <span class="math inline">\(9.4\%\)</span>.</li>
 </ul>
 </section>
-<section id="estabilidad-del-error-de-redondeo" class="level4" data-number="1.2.2.4">
-<h4 data-number="1.2.2.4" class="anchored" data-anchor-id="estabilidad-del-error-de-redondeo"><span class="header-section-number">1.2.2.4</span> Estabilidad del error de redondeo</h4>
+<section id="estabilidad-del-error-de-redondeo" class="level4" data-number="7.2.2.4">
+<h4 data-number="7.2.2.4" class="anchored" data-anchor-id="estabilidad-del-error-de-redondeo"><span class="header-section-number">7.2.2.4</span> Estabilidad del error de redondeo</h4>
 <ul>
 <li>Una propiedad importante compartida por todas las técnicas de integración compuesta es su estabilidad respecto al error de redondeo.</li>
 <li>Es decir, sorprendentemente, el error de redondeo no depende del número de cálculos realizados al aplicar estas fórmulas (demostración en página 156).</li>
@@ -664,8 +700,8 @@ http://www.wolframalpha.com/widgets/view.jsp?id=8ab70731b1553f17c11a3bbc87e0b605
 </ul>
 </section>
 </section>
-<section id="métodos-de-cuadratura-adaptable-o-integración-adaptativa" class="level3" data-number="1.2.3">
-<h3 data-number="1.2.3" class="anchored" data-anchor-id="métodos-de-cuadratura-adaptable-o-integración-adaptativa"><span class="header-section-number">1.2.3</span> Métodos de cuadratura adaptable o integración adaptativa</h3>
+<section id="métodos-de-cuadratura-adaptable-o-integración-adaptativa" class="level3" data-number="7.2.3">
+<h3 data-number="7.2.3" class="anchored" data-anchor-id="métodos-de-cuadratura-adaptable-o-integración-adaptativa"><span class="header-section-number">7.2.3</span> Métodos de cuadratura adaptable o integración adaptativa</h3>
 <ul>
 <li>Las reglas compuestas de cuadratura vistas necesitan nodos equiespaciados.</li>
 <li>Generalmente, se usa un incremento pequeño <span class="math inline">\(h\)</span> de manera uniforme en todo el intervalo de integración para garantizar una precisión global.</li>
@@ -674,8 +710,8 @@ http://www.wolframalpha.com/widgets/view.jsp?id=8ab70731b1553f17c11a3bbc87e0b605
 <li>Los métodos de cuadratura adaptable o integración adaptativa se encargan de implementar esto, pero no los estudiaremos.</li>
 </ul>
 </section>
-<section id="ejemplos-en-python" class="level3" data-number="1.2.4">
-<h3 data-number="1.2.4" class="anchored" data-anchor-id="ejemplos-en-python"><span class="header-section-number">1.2.4</span> Ejemplos en Python</h3>
+<section id="ejemplos-en-python" class="level3" data-number="7.2.4">
+<h3 data-number="7.2.4" class="anchored" data-anchor-id="ejemplos-en-python"><span class="header-section-number">7.2.4</span> Ejemplos en Python</h3>
 <ul>
 <li>Importamos módulos necesarios:</li>
 </ul>
@@ -1111,8 +1147,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./index.html" class="pagination-link  aria-label=" prefacio"="">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Prefacio</span>
+      <a href="./06_aprox_polin_parte1.html" class="pagination-link  aria-label=" &lt;span="" polinomial="" -="" parte="" 1:="" interpolación&lt;="" span&gt;"="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Aproximación polinomial - Parte 1: interpolación</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
