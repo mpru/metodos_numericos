@@ -7,12 +7,19 @@ book:
   date: today
   chapters:
     - index.qmd
-    - unidad01.qmd
+    - 01_intro.qmd
   search: true
   repo-url: https://github.com/mpru/metodos_numericos/
   repo-actions: [edit, issue, source]
   downloads: [pdf]
   sharing: [twitter, facebook]
+
+# language:
+#   label:
+#     fig: "Figura "
+#     tab: "Tabla "
+#   ui:
+#     chapter_name: ""
 
 # bibliography: references.bib
 

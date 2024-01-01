@@ -16,7 +16,7 @@
 \pagestyle{fancy}
 \renewcommand{\footrulewidth}{0.4pt}
 \renewcommand{\sectionmark}[1]{\markright{#1}}
-\fancyhead[L]{MN - Guía de Estudio}
+\fancyhead[L]{Métodos Numéricos - Guía de Estudio}
 \fancyhead[R] {\leftmark}
 
 % Formato para el capítulo
@@ -57,7 +57,7 @@
 	\horrule{2pt} \\[0.4cm]
 	\huge \textbf{Métodos Numéricos} \\
 	\bigbreak
-	Guía de Estudio\\
+	Guía de Estudio - Año 2024\\
 	\horrule{2pt} \\[0.5cm]}
 
 \author{
@@ -73,7 +73,7 @@
 \makeatother
 
 % Otros paquetes
-\usepackage{xcolor}
+%\usepackage{xcolor}
 
 % cosas para modificar espacios entre ecuaciones y otros
 % Que haya menos espacio antes y dps de ecuaciones
@@ -96,25 +96,25 @@
 % }
 % \makeatother
 
-% Columnas
-\newenvironment{columns}[1][]{}{}
-
-\newenvironment{column}[1]{\begin{minipage}{#1}\ignorespaces}{%
-\end{minipage}
-\ifhmode\unskip\fi
-\aftergroup\useignorespacesandallpars}
-
-\def\useignorespacesandallpars#1\ignorespaces\fi{%
-#1\fi\ignorespacesandallpars}
-
-\makeatletter
-\def\ignorespacesandallpars{%
-  \@ifnextchar\par
-    {\expandafter\ignorespacesandallpars\@gobble}%
-    {}%
-}
-\makeatother
+%% Columnas
+%\newenvironment{columns}[1][]{}{}
+%
+%\newenvironment{column}[1]{\begin{minipage}{#1}\ignorespaces}{%
+%\end{minipage}
+%\ifhmode\unskip\fi
+%\aftergroup\useignorespacesandallpars}
+%
+%\def\useignorespacesandallpars#1\ignorespaces\fi{%
+%#1\fi\ignorespacesandallpars}
+%
+%\makeatletter
+%\def\ignorespacesandallpars{%
+%  \@ifnextchar\par
+%    {\expandafter\ignorespacesandallpars\@gobble}%
+%    {}%
+%}
+%\makeatother
 
 % Para que en Latex las tables queden donde quiero
-\usepackage{float}
+%\usepackage{float}
 % \floatplacement{table}{H}
