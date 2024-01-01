@@ -9,7 +9,8 @@ book:
     - index.qmd
     # - 01_intro.qmd
     # - 02_ecuaciones.qmd
-    - 03_sistemas_lineales.qmd
+    # - 03_sistemas_lineales.qmd
+    - 04_sistemasnolineales.qmd
   search: true
   repo-url: https://github.com/mpru/metodos_numericos/
   repo-actions: [edit, issue, source]
