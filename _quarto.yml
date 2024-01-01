@@ -7,19 +7,28 @@ book:
   date: today
   chapters:
     - index.qmd
-    - intro.qmd
-    - summary.qmd
-    - references.qmd
+    - unidad01.qmd
+  search: true
+  repo-url: https://github.com/mpru/metodos_numericos/
+  repo-actions: [edit, issue, source]
+  downloads: [pdf]
+  sharing: [twitter, facebook]
 
-bibliography: references.bib
+# bibliography: references.bib
 
 format:
   html:
     theme: cosmo
+    code-copy: true
   pdf:
     documentclass: scrreprt
+    include-in-header: preamble.tex
 
-editor: visual
+editor: source
 
 execute:
   freeze: auto
+  
+comments:
+  hypothesis: true
+
