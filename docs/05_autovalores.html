@@ -1,0 +1,1901 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.467">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Métodos Numéricos con Python - 5&nbsp; Valores y vectores propios</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./06_aprox_polin_parte1.html" rel="next">
+<link href="./04_sistemasnolineales.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://hypothes.is/embed.js"></script>
+<script>
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    document.body.classList.add('hypothesis-enabled');
+  });
+</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./05_autovalores.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Valores y vectores propios</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Métodos Numéricos con Python</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/mpru/metodos_numericos/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="./Métodos-Numéricos-con-Python.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
+              <i class="bi bi-bi-facebook pe-1"></i>
+            Facebook
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prefacio</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Conceptos básicos de análisis numérico</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_ecuaciones.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Resolución de ecuaciones en una variable</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_sistemas_lineales.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Resolución de sistemas de ecuaciones lineales</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_sistemasnolineales.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Resolución de sistemas de ecuaciones no lineales y optimización</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_autovalores.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Valores y vectores propios</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_aprox_polin_parte1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Aproximación polinomial - Parte 1: interpolación</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_aprox_polin_parte2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Aproximación polinomial - Parte 2: Derivación e integración</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#introducción" id="toc-introducción" class="nav-link active" data-scroll-target="#introducción"><span class="header-section-number">5.1</span> Introducción</a>
+  <ul class="collapse">
+  <li><a href="#propiedades" id="toc-propiedades" class="nav-link" data-scroll-target="#propiedades"><span class="header-section-number">5.1.1</span> Propiedades</a></li>
+  <li><a href="#obtención-de-autovalores-y-autovectores" id="toc-obtención-de-autovalores-y-autovectores" class="nav-link" data-scroll-target="#obtención-de-autovalores-y-autovectores"><span class="header-section-number">5.1.2</span> Obtención de autovalores y autovectores</a></li>
+  </ul></li>
+  <li><a href="#el-método-de-potencia" id="toc-el-método-de-potencia" class="nav-link" data-scroll-target="#el-método-de-potencia"><span class="header-section-number">5.2</span> El Método de Potencia</a>
+  <ul class="collapse">
+  <li><a href="#convergencia" id="toc-convergencia" class="nav-link" data-scroll-target="#convergencia"><span class="header-section-number">5.2.1</span> Convergencia</a></li>
+  <li><a href="#otras-características" id="toc-otras-características" class="nav-link" data-scroll-target="#otras-características"><span class="header-section-number">5.2.2</span> Otras características</a></li>
+  <li><a href="#variantes-para-acelerar-la-convergencia" id="toc-variantes-para-acelerar-la-convergencia" class="nav-link" data-scroll-target="#variantes-para-acelerar-la-convergencia"><span class="header-section-number">5.2.3</span> Variantes para acelerar la convergencia</a></li>
+  <li><a href="#variantes-para-hallar-el-autovalor-más-pequeño" id="toc-variantes-para-hallar-el-autovalor-más-pequeño" class="nav-link" data-scroll-target="#variantes-para-hallar-el-autovalor-más-pequeño"><span class="header-section-number">5.2.4</span> Variantes para hallar el autovalor más pequeño</a></li>
+  <li><a href="#variantes-para-hallar-otros-autovalores" id="toc-variantes-para-hallar-otros-autovalores" class="nav-link" data-scroll-target="#variantes-para-hallar-otros-autovalores"><span class="header-section-number">5.2.5</span> Variantes para hallar otros autovalores</a></li>
+  <li><a href="#importancia-del-método" id="toc-importancia-del-método" class="nav-link" data-scroll-target="#importancia-del-método"><span class="header-section-number">5.2.6</span> Importancia del método</a></li>
+  </ul></li>
+  <li><a href="#el-algoritmo-qr" id="toc-el-algoritmo-qr" class="nav-link" data-scroll-target="#el-algoritmo-qr"><span class="header-section-number">5.3</span> El algoritmo QR</a>
+  <ul class="collapse">
+  <li><a href="#factorización-qr" id="toc-factorización-qr" class="nav-link" data-scroll-target="#factorización-qr"><span class="header-section-number">5.3.1</span> Factorización QR</a></li>
+  <li><a href="#el-algoritmo-qr-1" id="toc-el-algoritmo-qr-1" class="nav-link" data-scroll-target="#el-algoritmo-qr-1"><span class="header-section-number">5.3.2</span> El algoritmo QR</a></li>
+  </ul></li>
+  <li><a href="#descomposición-en-valores-singulares-dvs" id="toc-descomposición-en-valores-singulares-dvs" class="nav-link" data-scroll-target="#descomposición-en-valores-singulares-dvs"><span class="header-section-number">5.4</span> Descomposición en valores singulares (DVS)</a>
+  <ul class="collapse">
+  <li><a href="#ejemplo" id="toc-ejemplo" class="nav-link" data-scroll-target="#ejemplo"><span class="header-section-number">5.4.1</span> Ejemplo</a></li>
+  <li><a href="#aplicaciones" id="toc-aplicaciones" class="nav-link" data-scroll-target="#aplicaciones"><span class="header-section-number">5.4.2</span> Aplicaciones</a></li>
+  <li><a href="#no-está-de-más-saber-que" id="toc-no-está-de-más-saber-que" class="nav-link" data-scroll-target="#no-está-de-más-saber-que"><span class="header-section-number">5.4.3</span> No está de más saber que…</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/mpru/metodos_numericos/edit/main/05_autovalores.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mpru/metodos_numericos/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/mpru/metodos_numericos/blob/main/05_autovalores.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Valores y vectores propios</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introducción" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="introducción"><span class="header-section-number">5.1</span> Introducción</h2>
+<!-- 
+
+La explicacion que usaba antes estaba basada en https://math.stackexchange.com/questions/36815/a-simple-explanation-of-eigenvectors-and-eigenvalues-with-big-picture-ideas-of 
+
+MUY BUENA EXPLICACION DE LO QUE ES UN AUTOVALOR Y AUTOVECTOR ACA:
+https://math.stackexchange.com/questions/36815/a-simple-explanation-of-eigenvectors-and-eigenvalues-with-big-picture-ideas-of
+hacer algo como lo de la mona lisa de wikipedia pero con vectores en un plano y una matriz, todo de orden 2? 
+como aca: http://www.visiondummy.com/2014/03/eigenvalues-eigenvectors/
+https://medium.com/@isomorphisms/what-do-eigenvectors-mean-intuitively-524b036a777d
+
+https://github.com/joanby/curso-numerico-1 
+
+https://es.khanacademy.org/math/linear-algebra/matrix-transformations/linear-transformations/a/visualizing-linear-transformations
+
+https://www.youtube.com/watch?v=YJfS4_m_0Z8
+
+https://aga.frba.utn.edu.ar/matriz-asociada-a-una-transformacion-lineal/
+
+https://aga.frba.utn.edu.ar/definicion-y-propiedades-de-las-transformaciones-lineales/
+
+https://www.uv.mx/personal/aherrera/files/2014/08/21a.-TRANSFORMACIONES-LINEALES-1.pdf
+
+http://mate.dm.uba.ar/~jeronimo/algebra_lineal/Capitulo3.pdf
+-->
+<ul>
+<li>Una matriz <span class="math inline">\(m \times n\)</span> se puede considerar como una función que utiliza multiplicación de matrices para transformar vectores columna <span class="math inline">\(n\)</span>-dimensionales en vectores columna <span class="math inline">\(m\)</span>-dimensional.</li>
+<li>Por eso, toda matriz <span class="math inline">\(\mathbf A\)</span> de dimensión <span class="math inline">\(m \times n\)</span> puede ser pensada como una transformación lineal de <span class="math inline">\(\mathbb R^n\)</span> a <span class="math inline">\(\mathbb R^m\)</span>:</li>
+</ul>
+<p><span class="math display">\[
+T: \mathbb R^n \rightarrow \mathbb R^m \quad | \quad T(\mathbf x) = \mathbf{Ax}
+\]</span></p>
+<ul>
+<li>Nos va a interesar de manera particular los casos donde esta función está definida por una matriz <span class="math inline">\(\mathbf A\)</span> cuadrada (de dimensión <span class="math inline">\(n \times n\)</span>), con lo cual la transformación <span class="math inline">\(\mathbf{Ax}\)</span> toma un vector en <span class="math inline">\(\mathbb R^n\)</span> y devuelve otro en <span class="math inline">\(\mathbb R^n\)</span>.</li>
+<li>Ahora bien, en general no es muy intuitivo saber qué tipo de cambios va a sufrir un vector <span class="math inline">\(\mathbf x\)</span> si lo premultiplicamos por <span class="math inline">\(\mathbf A\)</span>.</li>
+<li>Pero hay ciertos vectores que se modifican de una manera muy sencilla: lo único que hace la matriz <span class="math inline">\(\mathbf A\)</span> es “estirarlos” o “comprimirlos”. Es decir, puede cambiar su módulo o sentido, pero no su dirección.</li>
+<li>Expresado matemáticamente, para algunos vectores, la transformación <span class="math inline">\(\mathbf{Ax}\)</span> da por resultado el mismo vector <span class="math inline">\(\mathbf{x}\)</span>, multiplicado por una constante no nula <span class="math inline">\(\lambda\)</span>: <span class="math inline">\(\mathbf{Ax} = \lambda \mathbf{x}\)</span>.</li>
+<li>Estos vectores que “cambian poco” cuando se los transforma mediante la matriz <span class="math inline">\(\mathbf A\)</span> reciben el nombre de <em>autovectores</em>, <em>vectores propios</em> o <em>eigenvectores</em> de matriz <span class="math inline">\(\mathbf A\)</span>.</li>
+</ul>
+<div class="alert alert-success">
+<p><strong>Definición</strong>: Un <strong>autovector</strong> de una matriz <span class="math inline">\(\mathbf{A}\)</span> es cualquier vector <span class="math inline">\(\mathbf{x}\)</span> para el que sólo cambia su escala cuando se lo multiplica con <span class="math inline">\(\mathbf{A}\)</span>, es decir: <span class="math inline">\(\mathbf{Ax} = \lambda \mathbf{x}\)</span>, para algún número <span class="math inline">\(\lambda\)</span> real o complejo, que recibe el nombre de <strong>autovalor</strong>. En otras palabras:</p>
+<p><span class="math display">\[\mathbf{x} \text{ es un autovector y } \lambda \text{ es un autovalor de }\mathbf{A} \iff \mathbf{Ax} = \lambda \mathbf{x}, \quad \mathbf{x} \neq \mathbf{0}, \quad \lambda \in \mathbb{C}\]</span></p>
+</div>
+<ul>
+<li>Los autovalores y autovectores son muy importantes en muchas disciplinas, ya que los objetos que se estudian suelen ser representados con vectores y las operaciones que se hacen sobre ellos, con matrices.</li>
+<li>Entonces si una matriz <span class="math inline">\(\mathbf{A}\)</span> describe algún tipo de sistema u operación, los autovectores son aquellos vectores que, cuando pasan por el sistema, se modifican en una forma muy sencilla.</li>
+<li>Por ejemplo, si la matriz <span class="math inline">\(\mathbf{A}\)</span> representa transformaciones en <span class="math inline">\(\mathbb R^2\)</span>, en principio <span class="math inline">\(\mathbf{A}\)</span> podría estirar y rotar a los vectores. Sin embargo, a sus autovectores lo único que puede hacerles es estirarlos, no rotarlos.</li>
+<li>Veamos un caso concreto:</li>
+</ul>
+<p><span class="math display">\[\mathbf{A} = \begin{bmatrix} 3 &amp; 2 \\ 1 &amp; 4 \end{bmatrix} \qquad \mathbf{u} = \begin{bmatrix} 1 \\ 1 \end{bmatrix} \qquad \mathbf{v} = \begin{bmatrix} 1 \\ -0.5 \end{bmatrix} \qquad \mathbf{w} = \begin{bmatrix} 0 \\ 1 \end{bmatrix}\]</span></p>
+<ul>
+<li>En este gráfico podemos ver los vectores antes de transformarlos (premultiplicarlos) mediante <span class="math inline">\(\mathbf{A}\)</span>:</li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Plots/U5/auto1.png" class="img-fluid" width="384"></p>
+</div>
+</div>
+<ul>
+<li>Y en este gráfico podemos ver como quedan luego de la transformación:</li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Plots/U5/auto2.png" class="img-fluid" width="386"></p>
+</div>
+</div>
+<ul>
+<li><p><span class="math inline">\(\mathbf{u}\)</span> y <span class="math inline">\(\mathbf{v}\)</span> no cambiaron su dirección, sólo su norma: son <strong>autovectores</strong> de <span class="math inline">\(\mathbf{A}\)</span>, asociados a los autovalores 5 y 2.</p></li>
+<li><p>En cambio, la matriz <span class="math inline">\(\mathbf{A}\)</span> modificó la dirección de <span class="math inline">\(\mathbf{w}\)</span>, entonces <span class="math inline">\(\mathbf{w}\)</span> no es un autovector de <span class="math inline">\(\mathbf{A}\)</span>.</p></li>
+<li><p>Haciendo los cálculos:</p></li>
+</ul>
+<p><span class="math display">\[
+\mathbf{Au} = \begin{bmatrix} 5 \\ 5 \end{bmatrix} = 5 \mathbf{u} \qquad
+\mathbf{Av} = \begin{bmatrix} 2 \\ -1 \end{bmatrix} = 2\mathbf{v} \qquad
+\mathbf{Aw} = \begin{bmatrix} 2 \\ 4 \end{bmatrix}
+\]</span></p>
+<ul>
+<li><p>De forma general, si <span class="math inline">\(\mathbf x\)</span> es un autovector asociado con el autovalor real <span class="math inline">\(\lambda\)</span>, entonces <span class="math inline">\(\mathbf{Ax} = \lambda \mathbf x\)</span>, por lo que la matriz <span class="math inline">\(\mathbf{A}\)</span> transforma al vector <span class="math inline">\(\mathbf{x}\)</span> en un múltiplo escalar de sí mismo, con las siguientes opciones:</p>
+<ol type="a">
+<li>Si <span class="math inline">\(\lambda &gt; 1\)</span>, entonces <span class="math inline">\(\mathbf{A}\)</span> tiene el efecto de expandir <span class="math inline">\(\mathbf{x}\)</span> en un factor de <span class="math inline">\(\lambda\)</span>.</li>
+<li>Si <span class="math inline">\(0 &lt; \lambda &lt; 1\)</span>, entonces <span class="math inline">\(\mathbf{A}\)</span> comprime <span class="math inline">\(\mathbf{x}\)</span> en un factor de <span class="math inline">\(\lambda\)</span>.</li>
+<li>Si <span class="math inline">\(\lambda &lt; 0\)</span>, los efectos son similares, pero el sentido de <span class="math inline">\(\mathbf{Ax}\)</span> se invierte.</li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Plots/U5/auto3.png" class="img-fluid" width="420"></p>
+</div>
+</div>
+<section id="propiedades" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="propiedades"><span class="header-section-number">5.1.1</span> Propiedades</h3>
+<ul>
+<li>Se debe observar que si <span class="math inline">\(\mathbf{x}\)</span> es un autovector asociado con el autovalor <span class="math inline">\(\lambda\)</span> y <span class="math inline">\(\alpha\)</span> es cualquier constante diferente de cero, entonces <span class="math inline">\(\alpha \mathbf x\)</span> también es un autovector asociado con el mismo autovalor ya que:</li>
+</ul>
+<p><span class="math display">\[
+\mathbf A(\alpha \mathbf x) = \alpha (\mathbf{Ax}) = \alpha (\lambda \mathbf x) = \lambda (\alpha \mathbf x)
+\]</span></p>
+<ul>
+<li><p>En el ejemplo anterior vimos que <span class="math inline">\(\mathbf u = (1, 1)^T\)</span> es un autovector de <span class="math inline">\(\mathbf u\)</span> asociado al autovalor <span class="math inline">\(\lambda = 5\)</span>. Pero también lo es, por ejemplo, <span class="math inline">\(\mathbf z = 2\mathbf u = (2, 2)^T\)</span>, ya que <span class="math inline">\(\mathbf A \mathbf z = (10, 10)^T = 5 (2, 2)^T = 5 \mathbf z\)</span>.</p></li>
+<li><p>Si bien hay infinitos autovectores asociados a un autovalor, para todos los autovalores y usando cualquier norma vectorial <span class="math inline">\(||.||\)</span>, siempre existe un autovector de norma 1, el cual puede ser hallado a partir de cualquier autovector <span class="math inline">\(\mathbf x\)</span> como <span class="math inline">\(\alpha \mathbf x\)</span>, con <span class="math inline">\(\alpha = ||\mathbf x||^{-1}\)</span>.</p></li>
+<li><p>Dada una matriz <span class="math inline">\(\mathbf{A}\)</span> cuadradada de orden <span class="math inline">\(n\)</span>:</p>
+<ul>
+<li><span class="math inline">\(\mathbf{A}\)</span> tiene <span class="math inline">\(n\)</span> autovalores, <span class="math inline">\(\lambda_1, \lambda_2, \cdots, \lambda_n\)</span>, los cuales no necesariamente son todos distintos. Si lo son, los autovectores forman un conjunto linealmente independiente.</li>
+<li><span class="math inline">\(tr(A) = \sum_{i=1}^n a_{ii} = \sum_{i=1}^n \lambda_{i}\)</span>.</li>
+<li><span class="math inline">\(\det(A) = \prod_{i=1}^n \lambda_{i}\)</span>.</li>
+<li>Los autovalores de <span class="math inline">\(\mathbf{A}^k\)</span> son <span class="math inline">\(\lambda_1^k, \lambda_2^k, \cdots, \lambda_n^k\)</span>.</li>
+<li>Si <span class="math inline">\(\mathbf{A}\)</span> es real y simétrica todos sus autovalores son reales y los autovectores correspondientes a distintos autovalores son ortogonales.</li>
+<li>Si <span class="math inline">\(\mathbf{A}\)</span> es triangular los valores propios son los elementos diagonales.</li>
+<li>Los autovalores de una matriz y su transpuesta son los mismos.</li>
+<li>Si <span class="math inline">\(\mathbf{A}\)</span> tiene inversa, los autovalores de <span class="math inline">\(\mathbf{A}^{-1}\)</span> son <span class="math inline">\(1/\lambda_1, 1/\lambda_2, \cdots, 1/\lambda_n\)</span>.</li>
+<li>Los autovalores de <span class="math inline">\(\alpha \mathbf{A}\)</span> son <span class="math inline">\(\alpha \lambda_1, \alpha \lambda_2, \cdots, \alpha \lambda_n, \, \alpha \in \mathbb{R}\)</span>.</li>
+<li>Dos matrices cuadradas <span class="math inline">\(\mathbf{A}\)</span> y <span class="math inline">\(\mathbf{B}\)</span> son <em>semejantes</em> o <em>similares</em> si existe una matriz invertible <span class="math inline">\(\mathbf{Q}\)</span> tal que <span class="math inline">\(\mathbf{B} = \mathbf{Q}^{-1}\mathbf{A}\mathbf{Q}\)</span>. Las matrices semejantes tienen los mismos autovalores.</li>
+</ul></li>
+</ul>
+</section>
+<section id="obtención-de-autovalores-y-autovectores" class="level3" data-number="5.1.2">
+<h3 data-number="5.1.2" class="anchored" data-anchor-id="obtención-de-autovalores-y-autovectores"><span class="header-section-number">5.1.2</span> Obtención de autovalores y autovectores</h3>
+<ul>
+<li><p>Como estudiarán en Álgebra Lineal, para hallar autovalores y autovectores se deben seguir los siguientes dos pasos:</p>
+<ol type="1">
+<li>Se determinan los autovalores encontrando las soluciones de la ecuación algebraica de grado <span class="math inline">\(n\)</span>: <span class="math inline">\(det(\mathbf A - \lambda \mathbf I) = 0\)</span> (la incógnita es <span class="math inline">\(\lambda\)</span>).</li>
+<li>Para cada autovalor <span class="math inline">\(\lambda\)</span>, se determina un autovector al resolver el sistema lineal <span class="math inline">\(n \times n\)</span>: <span class="math inline">\((\mathbf A - \lambda \mathbf I)\mathbf x = \mathbf 0\)</span>.</li>
+</ol></li>
+<li><p>Estos pasos son el resultado de las siguientes consideraciones:</p>
+<ol type="a">
+<li>A partir de la definición tenemos: <span class="math inline">\(\mathbf{Ax} = \lambda \mathbf{x} \implies \mathbf{Ax} - \lambda \mathbf{x} = \mathbf{0} \implies (\mathbf{A} - \lambda \mathbf{I}) \mathbf{x} = \mathbf{0}\)</span>.</li>
+<li>Esto es un sistema de ecuaciones lineales con matriz de coeficientes <span class="math inline">\(\mathbf{A} - \lambda \mathbf{I}\)</span>, vector de incógnitas <span class="math inline">\(\mathbf x\)</span> (el autovector) y vector de términos independientes <span class="math inline">\(\mathbf{0}\)</span>. Es decir, es un <strong>sistema homogéneo</strong>.</li>
+<li>Un sistema homogéneo es siempre compatible, ya que al menos tiene la solución trivial <span class="math inline">\(\mathbf x = (0, \cdots, 0)^T\)</span>. Esta solución no nos interesa, puesto que buscamos autovectores y los mismos deben ser no nulos.</li>
+<li>Como sabemos, para que el sistema tenga otra solución además de la trivial, se tiene que tratar de un sistema indeterminado, con infinitas soluciones, ya que los sistemas compatibles o bien tienen una sola solución o infinitas. Esto tiene sentido, porque cada autovalor <span class="math inline">\(\lambda\)</span> tiene asociados infinitos autovectores. Entonces, para hallar autovectores necesitamos que el sistema <span class="math inline">\((\mathbf{A} - \lambda \mathbf{I}) \mathbf{x} = \mathbf{0}\)</span> sea compatible indeterminado.</li>
+<li>Para que un sistema sea indeterminado, su matriz de coeficientes debe tener determinante igual a 0, es decir: <span class="math inline">\(det(\mathbf A - \lambda \mathbf I) = 0\)</span>.</li>
+<li>Por eso sabemos que los autovalores de <span class="math inline">\(\mathbf A\)</span> tienen que ser aquellos valores <span class="math inline">\(\lambda\)</span> que satisfagan la igualdad anterior, que es una ecuación algebraica en <span class="math inline">\(\lambda\)</span> de grado <span class="math inline">\(n\)</span>. <span class="math inline">\(det(\mathbf A - \lambda \mathbf I)\)</span> recibe el nombre de <strong>polinomio característico</strong> de <span class="math inline">\(\mathbf A\)</span>.</li>
+</ol></li>
+<li><p><strong>Ejemplo</strong>:</p></li>
+</ul>
+<p><span class="math display">\[\begin{gather*}
+\mathbf{A} =
+\begin{bmatrix}
+    5 &amp; -2 &amp; 0 \\
+    -2 &amp; 3 &amp; -1 \\
+    0 &amp; -1 &amp; 1    
+\end{bmatrix}
+\implies \\ \\
+det(\mathbf{A} - \lambda \mathbf{I}) =
+\begin{vmatrix}
+    5 - \lambda &amp; -2 &amp; 0 \\
+    -2 &amp; 3 - \lambda &amp; -1 \\
+    0 &amp; -1 &amp; 1-\lambda
+\end{vmatrix}  =
+\cdots  = -\lambda^3 + 9 \lambda^2 - 18 \lambda + 6 = 0
+\end{gather*}\]</span></p>
+<ul>
+<li>Como pueden verificar ustedes (opcionalmente aplicando los métodos de la Unidad 2), las soluciones de la ecuación característica son <span class="math inline">\(\lambda_1 = 6.2899, \lambda_2 = 2.2943\)</span> y <span class="math inline">\(\lambda_3 = 0.4158\)</span>, los cuales son los autovalores de <span class="math inline">\(\mathbf{A}\)</span>.</li>
+<li>Para hallar un autovector asociado a <span class="math inline">\(\lambda_1 = 6.2899\)</span>, resolvemos el sistema de ecuaciones <span class="math inline">\((\mathbf{A} - 6.2899 \, \mathbf{I}) \mathbf{x} = \mathbf{0}\)</span>:</li>
+</ul>
+<p><span class="math display">\[\begin{gather*}
+(\mathbf{A} - 6.2899 \, \mathbf{I}) \mathbf{x} = \mathbf{0} \implies
+\begin{bmatrix}
+    -1.2899 &amp; -2 &amp; 0 \\
+    -2 &amp; -3.2899 &amp; -1 \\
+    0 &amp; -1 &amp; -5.2899
+\end{bmatrix}
+\begin{bmatrix}
+    x_1 \\ x_2 \\ x_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+    0 \\ 0 \\ 0
+\end{bmatrix}
+\\ \\
+\implies
+\begin{cases}
+-1.2899 x_1 -2 x_2 &amp;= 0 \\
+-2 x_1 - 3.2899 x_2 - x_3 &amp;= 0\\
+-x_2 - 5.2899 x_3 &amp;= 0
+\end{cases} \implies
+\begin{cases}
+    x_1 = 8.2018 x_3\\
+    x_2 = -5.2899 x_2\\
+    x_3 \in \mathbb{R}
+\end{cases}
+\end{gather*}\]</span></p>
+<ul>
+<li>Como se puede ver la solución de este sistema homogéneo no es única, representando los infinitos autovectores asociados a <span class="math inline">\(\lambda_1 = 6.2899\)</span>. Por ejemplo, si elegimos <span class="math inline">\(x_3 = 1\)</span>, obtenemos el autovector:</li>
+</ul>
+<p><span class="math display">\[
+\mathbf{x}_1 =
+\begin{bmatrix}
+    8.2018 \\ -5.2899 \\ 1
+\end{bmatrix}
+\]</span></p>
+<ul>
+<li><p>En general, se acostumbra a informar el autovector de norma 1 (que sí es único).</p></li>
+<li><p>De la misma forma se procede con los restantes autovalores <span class="math inline">\(\lambda_2\)</span> y <span class="math inline">\(\lambda_3\)</span>.</p></li>
+<li><p>Hallar la ecuación característica ya es demasiado trabajoso para <span class="math inline">\(n=3\)</span>, y mucho más será para mayor <span class="math inline">\(n\)</span>. Ni hablar de resolver el sistema para encontrar los autovectores.</p></li>
+<li><p>Por eso en esta unidad veremos métodos que directamente nos dan como resultados los autovectores y autovalores de una matriz.</p></li>
+<li><p>Por supuesto, Python trae una función para esto. Podemos usarla para chequear los resultados, pero no porque sea fácil emplearla nos libraremos de estudiar los algoritmos encargados de producir nuestros queridos autovectores y autovalores:</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> eig</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.array([[ <span class="dv">5</span>, <span class="op">-</span><span class="dv">2</span>, <span class="dv">0</span>],</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>              [<span class="op">-</span><span class="dv">2</span>, <span class="dv">3</span>, <span class="op">-</span><span class="dv">1</span>],</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>              [ <span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>]])</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>autovalores, autovectores <span class="op">=</span> eig(A)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Autovalores:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Autovalores:</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(autovalores)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[6.2899+0.j 2.2943+0.j 0.4158+0.j]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Autovectores:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Autovectores:</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(autovectores)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[ 0.836   0.5049  0.2149]
+ [-0.5392  0.6831  0.4927]
+ [ 0.1019 -0.5277  0.8433]]</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="el-método-de-potencia" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="el-método-de-potencia"><span class="header-section-number">5.2</span> El Método de Potencia</h2>
+<ul>
+<li>El <strong>método de potencia</strong> (también conocido como <em>de las potencias</em> o <em>de aproximaciones sucesivas</em>) es una técnica iterativa que se usa para determinar el autovalor dominante de una matriz y un autovector asociado.</li>
+</ul>
+<div class="alert alert-success">
+<p><strong>Definición</strong>: sean <span class="math inline">\(\lambda_1, \lambda_2, \cdots, \lambda_n\)</span> los autovalores de una matriz <span class="math inline">\(n \times n\)</span>, <span class="math inline">\(\mathbf{A}\)</span>. <span class="math inline">\(\lambda_1\)</span> es llamado <strong>autovalor dominante</strong> de <span class="math inline">\(\mathbf A\)</span> si:</p>
+<p><span class="math display">\[
+|\lambda_1| &gt; |\lambda_i|, \quad i=2, \cdots,n
+\]</span></p>
+<p>Los autovectores correspondientes a <span class="math inline">\(\lambda_1\)</span> se llaman <strong>autovectores dominantes</strong> de <span class="math inline">\(\mathbf A\)</span>.</p>
+</div>
+<ul>
+<li><p>En primer lugar, se debe tomar un vector inicial <span class="math inline">\(\mathbf x^{(0)}\)</span> con norma <span class="math inline">\(||\mathbf x^{(0)}||_{\infty} =1\)</span>.</p></li>
+<li><p>Por ejemplo, para <span class="math inline">\(n=3\)</span> puede ser <span class="math inline">\(\mathbf x^{(0)} = (1, 1, 1)^T\)</span> o <span class="math inline">\(\mathbf x^{(0)} = (1, 0, 0)^T\)</span>, entre otros.</p></li>
+<li><p>Luego, para cada <span class="math inline">\(k = 1, 2, \cdots\)</span> se da lugar al siguiente proceso iterativo:</p>
+<ol type="1">
+<li><p>Calcular <span class="math inline">\(\mathbf y^{(k)} = \mathbf A \mathbf x^{(k-1)}\)</span>.</p></li>
+<li><p>Determinar <span class="math inline">\(\mu^{(k)}\)</span> como la coordenada de mayor valor absoluto en <span class="math inline">\(\mathbf y^{(k)}\)</span>.</p>
+<p>Es decir, tomar <span class="math inline">\(\mu^{(k)} / \, |\mu^{(k)}| = ||\mathbf y^{(k)}||_{\infty}\)</span>. Si hay varias coordenadas que cumplen con esta característica, tomar la primera.</p></li>
+<li><p>Calcular: <span class="math inline">\(\mathbf x^{(k)} = \frac{\mathbf y^{(k)}}{\mu^{(k)}}\)</span></p></li>
+</ol></li>
+<li><p>De esta forma, la sucesión <span class="math inline">\(\{\mu^{(k)}\}^{\infty}_{k=0}\)</span> converge al autovalor dominante de <span class="math inline">\(\mathbf A\)</span>, mientras que la sucesión <span class="math inline">\(\{\mathbf x^{(k)}\}^{\infty}_{k=0}\)</span> converge a un autovector asociado de norma <span class="math inline">\(L_{\infty} = 1\)</span>.</p></li>
+<li><p>La deducción y justificación de este método puede leerse opcionalmente en las páginas 432-433 del libro.</p></li>
+<li><p>Retomando el ejemplo de la sección anterior, vamos a aplicar este proceso con:</p></li>
+</ul>
+<p><span class="math display">\[
+\mathbf{A} =
+\begin{bmatrix}
+    5 &amp; -2 &amp; 0 \\
+    -2 &amp; 3 &amp; -1 \\
+    0 &amp; -1 &amp; 1    
+\end{bmatrix} \qquad
+\mathbf{x}^{(0)} =
+\begin{bmatrix}
+    1 \\
+    1 \\
+    1    
+\end{bmatrix}
+\]</span></p>
+<table class="table">
+<colgroup>
+<col style="width: 3%">
+<col style="width: 23%">
+<col style="width: 23%">
+<col style="width: 5%">
+<col style="width: 32%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><span class="math inline">\(k\)</span></th>
+<th><span class="math inline">\(\mathbf{x}^{(k)}\)</span></th>
+<th><span class="math inline">\(\mathbf{y}^{(k)} = \mathbf{Ax}^{(k)}\)</span></th>
+<th><span class="math inline">\(\mu^{(k)}\)</span></th>
+<th><span class="math inline">\(\mathbf{x}^{(k+1)}\)</span> = <span class="math inline">\(\mathbf{y}^{(k)} / \mu^{(k)}\)</span></th>
+<th>Error (<span class="math inline">\(L_2\)</span>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>[1 1 1]<span class="math inline">\(^T\)</span></td>
+<td>[3 0 0]<span class="math inline">\(^T\)</span></td>
+<td>3</td>
+<td>[1 0 0]<span class="math inline">\(^T\)</span></td>
+<td>1.4142</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>[1 0 0]<span class="math inline">\(^T\)</span></td>
+<td>[5 -2 0]<span class="math inline">\(^T\)</span></td>
+<td>5</td>
+<td>[1 -0.4 0]<span class="math inline">\(^T\)</span></td>
+<td>0.4</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>[1 -0.4 0]<span class="math inline">\(^T\)</span></td>
+<td>[5.8 -3.2 0.4]<span class="math inline">\(^T\)</span></td>
+<td>5.8</td>
+<td>[1 -0.5517 0.0690]<span class="math inline">\(^T\)</span></td>
+<td>0.1667</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>[1 -0.5517 0.0690]<span class="math inline">\(^T\)</span></td>
+<td>[6.1034 -3.7241 0.6207]<span class="math inline">\(^T\)</span></td>
+<td>6.1034</td>
+<td>[1 -0.6102 0.1017]<span class="math inline">\(^T\)</span></td>
+<td>0.0690</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>[1 -0.6102 0.1017]<span class="math inline">\(^T\)</span></td>
+<td>[6.2203 -3.9322 0.7119]<span class="math inline">\(^T\)</span></td>
+<td>6.2203</td>
+<td>[1 -0.6322 0.1144]<span class="math inline">\(^T\)</span></td>
+<td>0.0254</td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr class="odd">
+<td>16</td>
+<td>[1 -0.644972 0.1219239]<span class="math inline">\(^T\)</span></td>
+<td>[6.2899 -4.0568 0.7669]<span class="math inline">\(^T\)</span></td>
+<td>6.2899</td>
+<td>[1 -0.644972 0.1219241]<span class="math inline">\(^T\)</span></td>
+<td>3.956E-7</td>
+</tr>
+</tbody>
+</table>
+<section id="convergencia" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="convergencia"><span class="header-section-number">5.2.1</span> Convergencia</h3>
+<ul>
+<li><p>Para que la convergencia esté garantizada, se deben cumplir las siguientes condiciones:</p>
+<ol type="a">
+<li>Los autovalores de <span class="math inline">\(\mathbf A\)</span>, <span class="math inline">\(\lambda_1, \lambda_2, \cdots, \lambda_n\)</span> están asociados a un conjunto de autovectores linealmente independientes<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</li>
+<li><span class="math inline">\(\mathbf A\)</span> tiene un autovalor dominante, es decir, se verifica: <span class="math inline">\(|\lambda_1| &gt; |\lambda_2| \geq \cdots \geq |\lambda_n| \geq 0\)</span>.</li>
+</ol></li>
+<li><p>Si se cumplen estas condiciones, en general el método converge con cualquier vector inicial <span class="math inline">\(\mathbf x^{(0)}\)</span><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p></li>
+<li><p>Si no se cumplen estas condiciones, el método puede converger o fallar.</p></li>
+<li><p>Como en la práctica no podemos verificar el cumplimiento de las mismas, sencillamente corremos el método y observamos el resultado.</p></li>
+<li><p>Para detener el proceso, podemos usar los mismos criterios vistos en la Unidad 3.</p></li>
+<li><p>Con el método así presentado, la convergencia será más rápida cuanto mayor sea el valor absoluto del autovalor dominante <span class="math inline">\(|\lambda_1|\)</span> comparado con el que le sigue, <span class="math inline">\(|\lambda_2|\)</span>.</p></li>
+<li><p>También es más rápida cuando se aplica en matrices simétricas que en matrices asimétricas.</p></li>
+</ul>
+</section>
+<section id="otras-características" class="level3" data-number="5.2.2">
+<h3 data-number="5.2.2" class="anchored" data-anchor-id="otras-características"><span class="header-section-number">5.2.2</span> Otras características</h3>
+<ul>
+<li><p>La división por la coordenada de mayor valor absoluto, <span class="math inline">\(\mu^{(k)}\)</span>, produce como resultado en cada paso un vector de norma <span class="math inline">\(L_{\infty} = 1\)</span>. Si no se incluyera esta normalización, el proceso iterativo resultaría igual a:</p>
+<p><span class="math display">\[
+  \begin{aligned}
+  \mathbf{x}^{(1)} &amp;= \mathbf{Ax}^{(0)} \\
+  \mathbf{x}^{(2)} &amp;= \mathbf{Ax}^{(1)} = \mathbf{A}^2 \mathbf{x}^{(0)}\\
+  \mathbf{x}^{(3)} &amp;= \mathbf{Ax}^{(2)} = \mathbf{A}^3 \mathbf{x}^{(0)}\\
+  &amp;\vdots \\
+  \mathbf{x}^{(k)} &amp;= \mathbf{Ax}^{(k-1)} = \mathbf{A}^k \mathbf{x}^{(0)}\\
+  &amp;\vdots \\
+  \end{aligned}
+  \]</span></p></li>
+<li><p>Esta sucesión también converge a un autovector dominante, pero no normalizado y no nos entrega el autovalor correspondiente, el cual puede ser calculado mediante el <strong>cociente de Rayleigh</strong> luego de detener el proceso: si <span class="math inline">\(\mathbf{x}\)</span> es un autovector de <span class="math inline">\(\mathbf{A}\)</span>, entonces su correspondiente autovalor es:</p>
+<p><span class="math display">\[
+  \lambda = \frac{(\mathbf{Ax})^t\mathbf{x}}{\mathbf{x}^t\mathbf{x}}
+  \]</span></p></li>
+<li><p>Sin embargo, las sucesivas potencias de <span class="math inline">\(\mathbf A\)</span> tienden a terminar en errores de desbordamiento o subdesbordamiento. Por eso resulta necesaria la introducción de la constante normalizadora, como se indicó inicialmente.</p></li>
+</ul>
+</section>
+<section id="variantes-para-acelerar-la-convergencia" class="level3" data-number="5.2.3">
+<h3 data-number="5.2.3" class="anchored" data-anchor-id="variantes-para-acelerar-la-convergencia"><span class="header-section-number">5.2.3</span> Variantes para acelerar la convergencia</h3>
+<ul>
+<li>Se han desarrollado modificaciones del método de potencia que logran una convergencia más rápida y que son importantes en problemas con matrices de gran dimensión.</li>
+<li>En el caso de matrices generales, se pueden aplicar el <em>método de potencia trasladada</em> o el <em>procedimiento de Aitkens</em>.</li>
+<li>Para matrices simétricas, se puede mejorar significativamente la convergencia con algunas modificaciones en los cálculos, en lo que se conoce como <em>método de potencia simétrica</em>.</li>
+<li>No nos detendremos en estas variantes.</li>
+</ul>
+</section>
+<section id="variantes-para-hallar-el-autovalor-más-pequeño" class="level3" data-number="5.2.4">
+<h3 data-number="5.2.4" class="anchored" data-anchor-id="variantes-para-hallar-el-autovalor-más-pequeño"><span class="header-section-number">5.2.4</span> Variantes para hallar el autovalor más pequeño</h3>
+<ul>
+<li><em>Recordatorio</em>: los autovalores de <span class="math inline">\(\mathbf{A}^{-1}\)</span> son los recíprocos de los de <span class="math inline">\(\mathbf{A}\)</span>.</li>
+<li>Si aplicamos el método a <span class="math inline">\(\mathbf{A}^{-1}\)</span>, obtenemos su autovalor dominante.</li>
+<li>Y, por la observación anterior, si tomamos el recíproco del autovalor así hallado, obtenemos el autovalor de <span class="math inline">\(\mathbf{A}\)</span> de menor valor absoluto.</li>
+</ul>
+</section>
+<section id="variantes-para-hallar-otros-autovalores" class="level3" data-number="5.2.5">
+<h3 data-number="5.2.5" class="anchored" data-anchor-id="variantes-para-hallar-otros-autovalores"><span class="header-section-number">5.2.5</span> Variantes para hallar otros autovalores</h3>
+<p><strong>Método de potencia inversa</strong></p>
+<ul>
+<li>Es una modificación que se usa para encontrar el autovalor de <span class="math inline">\(\mathbf A\)</span> que está más cerca de un número específico que hay que establecer de antemano, <span class="math inline">\(q\)</span>.</li>
+<li>Esto se utiliza en aplicaciones donde <span class="math inline">\(q\)</span> es una aproximación a algún autovalor que se tiene disponible y que se desea mejorar.</li>
+<li>Tampoco profundizaremos en este método, pero se lo puede consultar en las páginas 439-440.</li>
+</ul>
+<p><strong>Técnicas de deflación</strong></p>
+<ul>
+<li><p>Las técnicas de deflación permiten obtener los otros autovalores de la matriz, luego de haber obtenido el dominante con el método de potencia.</p></li>
+<li><p>Consisten en formar una nueva matriz <span class="math inline">\(\mathbf A_2\)</span> cuyos autovalores sean iguales a los de la matriz original <span class="math inline">\(\mathbf A\)</span>, excepto por el autovalor dominante de <span class="math inline">\(\mathbf A\)</span>, que es reemplazado por un autovalor igual a cero en <span class="math inline">\(\mathbf A_2\)</span>.</p></li>
+<li><p>Entre estos algoritmos encontramos a la <strong>deflación de Wielandt</strong> y la <strong>deflación de Hotelling</strong>.</p>
+<ul>
+<li><p>La <strong>deflación de Wielandt</strong> se puede utilizar de manera general para cualquier tipo de matriz. Si bien no reviste de demasiada complejidad, involucra numerosos cálculos y no nos detendremos en ello, pero puede ser consultada en la página 443 del libro.</p></li>
+<li><p>La <strong>deflación de Hotelling</strong> se aplica para matrices simétricas. Una vez hallada una aproximación para el autovalor dominante <span class="math inline">\(\lambda_1\)</span> con un autovector asociado <span class="math inline">\(\mathbf x_1\)</span>, se debe calcular la siguiente matriz:</p>
+<p><span class="math display">\[
+  \mathbf{A}_2 = \mathbf{A} - \lambda_1 \mathbf{u}_1 \mathbf{u}_1^T
+  \]</span></p>
+<p>donde <span class="math inline">\(\mathbf{u}_1 = \mathbf{x}_1 / ||\mathbf{x}_1||_2\)</span> (es decir, <span class="math inline">\(\mathbf{u}_1\)</span> es el autovector asociado a <span class="math inline">\(\lambda_1\)</span> de norma euclidiana igual a 1).</p>
+<p>Los autovalores de <span class="math inline">\(\mathbf A_2\)</span> son <span class="math inline">\(\{0, \lambda_2, \cdots, \lambda_n\}\)</span>, de modo que al aplicar nuevamente el método de potencia sobre <span class="math inline">\(\mathbf A_2\)</span> para hallar su autovalor dominante, encontraremos el segundo autovalor de <span class="math inline">\(\mathbf A\)</span>, <span class="math inline">\(\lambda_2\)</span>.</p>
+<p>Repitiendo este proceso se pueden encontrar los restantes autovalores (por ejemplo, <span class="math inline">\(\mathbf{A}_3 = \mathbf{A}_{2} - \lambda_{2} \mathbf{u}_{2} \mathbf{u}_{2}^T\)</span>).</p></li>
+</ul></li>
+</ul>
+<!-- En todos lados veo que Hotelling es sólo para matrices simétricas, pero cuando lo hago a mano en ejemplos veo que también funciona para casos donde A no es simétrica. Me queda esta duda. Por otro lado, ver en mi archivo de ejemplo de R, si aplico la deflación usando los valores sacados con eigen(), funciona, pero si lo hago a partir de los resultados de la función que programé con el método de potencia, el tercer autovalor ya no es igual en algunos casos, por los errores -->
+<ul>
+<li>No obstante, se debe tener en cuenta que las técnicas de deflación en general no se aplican para calcular todos los autovalores de una matriz, sino sólo algunos, ya que presentan un grave inconveniente ligado al deterioro de las aproximaciones de los autovalores restantes.</li>
+<li>Dado que el valor obtenido en la primera etapa es una aproximación del verdadero autovalor <span class="math inline">\(\lambda_1\)</span>, los autovalores de <span class="math inline">\(\mathbf A_2\)</span> no son exactamente los restantes autovalores de <span class="math inline">\(\mathbf A\)</span> sino una aproximación a los mismos.</li>
+<li>Al aplicar el método otra vez, se obtiene una aproximación al autovalor dominante de <span class="math inline">\(\mathbf A_2\)</span>, que es a su vez aproximado pero no igual al verdadero valor <span class="math inline">\(\lambda_2\)</span> que buscamos.</li>
+<li>Entonces, tras un cierto número de etapas de deflación, la acumulación de errores de redondeo y de truncamiento pueden deteriorar notablemente la aproximación.</li>
+<li>Por esta razón, si es necesario encontrar todos los autovalores de una matriz, es conveniente emplear otras técnicas, como la del algoritmo QR que veremos en la siguiente sección.</li>
+</ul>
+</section>
+<section id="importancia-del-método" class="level3" data-number="5.2.6">
+<h3 data-number="5.2.6" class="anchored" data-anchor-id="importancia-del-método"><span class="header-section-number">5.2.6</span> Importancia del método</h3>
+<ul>
+<li><p>Si hay otras técnicas que hallan todos los autovalores, ¿por qué nos preocupamos por el método de potencia que nos da sólo uno?</p>
+<ul>
+<li>Porque hallar todos los autovalores en matriz de gran dimensión es computacionalmente costoso.</li>
+<li>Porque es utilizado en muchas aplicaciones donde sólo se necesita obtener el autovalor dominante.</li>
+<li>Porque es eficiente cuando la matriz es dispersa (matriz de gran dimensión con la gran mayoría de sus entradas iguales a cero).</li>
+</ul></li>
+<li><p>De hecho, Google utiliza el método de potencia en su algoritmo <em>PageRank</em> para buscar rankear los resultados de búsquedas de páginas web, desarrollado en Stanford University en 1996 por Larry Page y Sergey Brin. El exito de este algoritmo derivó en la creación de esta mega empresa que empezó siendo sólo un motor de búsqueda (pueden buscar en Wikipedia o leer el artículo <a href="https://www.math.arizona.edu/~glickenstein/math443f12/bryanleise.pdf">The $25.000.000.000 eigenvector: the linear algebra behind Google</a>).</p></li>
+<li><p>Twitter también lo usa para generar las recomendaciones acerca de a quién seguir.</p></li>
+</ul>
+</section>
+</section>
+<section id="el-algoritmo-qr" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="el-algoritmo-qr"><span class="header-section-number">5.3</span> El algoritmo QR</h2>
+<ul>
+<li>En esta sección consideramos el <strong>algoritmo QR</strong>, una técnica que se utiliza para determinar en forma sistemática todos los autovalores de una matriz cuadrada.</li>
+<li>Primero vamos a ver de qué se trata la <strong>factorización QR</strong> y luego veremos el <strong>algoritmo QR</strong> para hallar los autovalores.</li>
+</ul>
+<section id="factorización-qr" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="factorización-qr"><span class="header-section-number">5.3.1</span> Factorización QR</h3>
+<ul>
+<li><p>Ya hemos mencionado un tipo especial de factorización de matrices, la <strong>LU</strong>.</p></li>
+<li><p>Ahora vamos a ver otra factorización, que también tiene numerosas aplicaciones:</p>
+<ul>
+<li>Resolver sistemas de ecuaciones lineales.</li>
+<li>Calcular determinantes e inversas.</li>
+<li>Encontrar otras factorizacones (como la de Cholesky y la de Schur).</li>
+<li>Otras.</li>
+</ul></li>
+</ul>
+<div class="alert alert-info">
+<p><strong>Teorema:</strong>:</p>
+<ul>
+<li><p>Toda matriz real cuadrada no singular <span class="math inline">\(\mathbf A\)</span> de dimensión <span class="math inline">\(n \times n\)</span> puede factorizarse en la forma <span class="math inline">\(\mathbf A = \mathbf{QR}\)</span>, donde <span class="math inline">\(\mathbf Q\)</span> es una matriz ortogonal <span class="math inline">\(n \times n\)</span> y <span class="math inline">\(\mathbf R\)</span> es una matriz triangular superior <span class="math inline">\(n \times n\)</span>. La factorización es única si se pide que los elementos diagonales de <span class="math inline">\(\mathbf R\)</span> sean positivos.</p></li>
+<li><p>Toda matriz real rectangular <span class="math inline">\(\mathbf A\)</span> de dimensión <span class="math inline">\(m \times n\)</span> (<span class="math inline">\(m &gt; n\)</span>), puede factorizarse en la forma <span class="math inline">\(\mathbf A = \mathbf{QR}\)</span>, donde <span class="math inline">\(\mathbf Q\)</span> es una matriz ortogonal <span class="math inline">\(m \times m\)</span> y <span class="math inline">\(\mathbf R\)</span> es una matriz triangular superior <span class="math inline">\(m \times n\)</span>, en la cual sus últimas <span class="math inline">\(m-n\)</span> filas son todos ceros. Dado que las últimas filas son nulas, las últimas columnas de <span class="math inline">\(\mathbf Q\)</span> no aportan al producto <span class="math inline">\(\mathbf Q\mathbf R\)</span> y por lo tanto otras definiciones y algunos algoritmos presentan a <span class="math inline">\(\mathbf Q\)</span> como una matriz <span class="math inline">\(m \times n\)</span> con columnas ortonormales y <span class="math inline">\(\mathbf R\)</span> como una matriz triangular <span class="math inline">\(n \times n\)</span>.</p></li>
+</ul>
+</div>
+<ul>
+<li>Recordamos que una matriz ortogonal es una matriz cuadrada cuya matriz inversa coincide con su matriz traspuesta: <span class="math inline">\(\mathbf Q^T = \mathbf Q^{-1}\)</span>. Sus columnas son vectores ortogonales de norma 1.</li>
+</ul>
+<!-- Recordatorio para mí: Una matriz ortogonal es necesariamente unitaria. Ortogonal es el equivalente a unitaria en los reales. Unitaria es cuando la traspuesta conjugada (con complejos) es igual a la inversa. -->
+<ul>
+<li><p>Para obtener <span class="math inline">\(\mathbf Q\)</span> se puede aplicar el proceso de Gram-Schmidt a las columnas de <span class="math inline">\(\mathbf A\)</span> (las columnas de <span class="math inline">\(\mathbf Q\)</span> son las de <span class="math inline">\(\mathbf A\)</span> luego de la ortonormalización).</p></li>
+<li><p>Una vez obtenida <span class="math inline">\(\mathbf Q\)</span>, <span class="math inline">\(\mathbf R\)</span> se puede obtener como <span class="math inline">\(\mathbf R = \mathbf Q^T \mathbf A\)</span>.</p></li>
+<li><p>Hay otros métodos que también permiten hacer esto, pero en este curso no nos vamos a preocupar por el cálculo de la factorización y directamente emplearemos la función de R con la que se obtiene.</p></li>
+<li><p>Ejemplo con una matriz cuadrada. Sea:</p>
+<p><span class="math display">\[
+  \mathbf A =
+  \begin{bmatrix}
+  1 &amp; -2 &amp; 1 \\
+  -1 &amp; 3 &amp; 2 \\
+  1 &amp; -1 &amp; -4
+  \end{bmatrix}
+  \]</span></p>
+<p>Su factorización QR es:</p>
+<p><span class="math display">\[
+  \mathbf Q =
+  \begin{bmatrix}
+  -\frac{1}{\sqrt 3} &amp; 0                  &amp; -\frac{2}{\sqrt 6} \\
+  \frac{1}{\sqrt 3} &amp; -\frac{1}{\sqrt 2}  &amp; -\frac{1}{\sqrt 6} \\
+  -\frac{1}{\sqrt 3} &amp; -\frac{1}{\sqrt 2} &amp; \frac{1}{\sqrt 6}
+  \end{bmatrix}
+  \qquad
+  \mathbf R =
+      \begin{bmatrix}
+  -\sqrt 3 &amp; 2\sqrt 3  &amp; \frac{5\sqrt 3}{3} \\
+  0        &amp; -\sqrt 2  &amp;  \sqrt 2 \\
+  0        &amp; 0         &amp; -\frac{\sqrt{96}}{3}
+  \end{bmatrix}
+  \]</span></p>
+<p>de modo que se verifica: <span class="math inline">\(\mathbf A = \mathbf{QR}\)</span>.</p></li>
+<li><p>Lo comprobamos en Python.</p></li>
+<li><p><strong>Ejemplo con una matriz cuadrada.</strong></p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> qr</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="op">-</span><span class="dv">2</span>, <span class="dv">1</span>],</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>              [<span class="op">-</span><span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>],</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>              [<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">4</span>]])</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>Q, R <span class="op">=</span> qr(A)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matriz Q (ortogonal):"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Matriz Q (ortogonal):</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(Q)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[-0.5774  0.     -0.8165]
+ [ 0.5774 -0.7071 -0.4082]
+ [-0.5774 -0.7071  0.4082]]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Matriz R (triangular superior):"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Matriz R (triangular superior):</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(R)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[-1.7321  3.4641  2.8868]
+ [ 0.     -1.4142  1.4142]
+ [ 0.      0.     -3.266 ]]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verificamos que Q es ortogonal</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>Q_traspuesta <span class="op">=</span> np.transpose(Q)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>Q_inversa <span class="op">=</span> np.linalg.inv(Q)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">¿Q es ortogonal? (t(Q) == inv(Q)):"</span>, np.allclose(Q_traspuesta, Q_inversa))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+¿Q es ortogonal? (t(Q) == inv(Q)): True</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verificamos A = QR</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>resultado <span class="op">=</span> np.dot(Q, R)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(resultado)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[ 1. -2.  1.]
+ [-1.  3.  2.]
+ [ 1. -1. -4.]]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">¿A = QR?"</span>, np.allclose(A, resultado))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+¿A = QR? True</code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Ejemplo con una matriz rectangular:</strong></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="op">-</span><span class="dv">2</span>],</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>              [<span class="op">-</span><span class="dv">1</span>, <span class="dv">3</span>],</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>              [<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>]])</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>              </span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Forma 1</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>Q, R <span class="op">=</span> qr(A)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matriz Q (ortogonal):"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Matriz Q (ortogonal):</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(Q)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[-0.5774  0.     -0.8165]
+ [ 0.5774 -0.7071 -0.4082]
+ [-0.5774 -0.7071  0.4082]]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Matriz R (triangular superior):"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Matriz R (triangular superior):</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(R)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[-1.7321  3.4641]
+ [ 0.     -1.4142]
+ [ 0.      0.    ]]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verificamos que Q es ortogonal</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>Q_traspuesta <span class="op">=</span> np.transpose(Q)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>Q_inversa <span class="op">=</span> np.linalg.inv(Q)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">¿Q es ortogonal? (t(Q) == inv(Q)):"</span>, np.allclose(Q_traspuesta, Q_inversa))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+¿Q es ortogonal? (t(Q) == inv(Q)): True</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verificamos A = QR</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>resultado <span class="op">=</span> np.dot(Q, R)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(resultado)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[ 1. -2.]
+ [-1.  3.]
+ [ 1. -1.]]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">¿A = QR?"</span>, np.allclose(A, resultado))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+¿A = QR? True</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Forma 2 (omite filas nulas de R)</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>Q, R <span class="op">=</span> qr(A, mode<span class="op">=</span><span class="st">"economic"</span>)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matriz Q (ortogonal):"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Matriz Q (ortogonal):</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(Q)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[-0.5774  0.    ]
+ [ 0.5774 -0.7071]
+ [-0.5774 -0.7071]]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Matriz R (triangular superior):"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Matriz R (triangular superior):</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(R)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[-1.7321  3.4641]
+ [ 0.     -1.4142]]</code></pre>
+</div>
+</div>
+</section>
+<section id="el-algoritmo-qr-1" class="level3" data-number="5.3.2">
+<h3 data-number="5.3.2" class="anchored" data-anchor-id="el-algoritmo-qr-1"><span class="header-section-number">5.3.2</span> El algoritmo QR</h3>
+<ul>
+<li><p>Ahora estamos en condiciones de usar la factorización QR para obtener todos los autovalores de una matriz cuadrada <span class="math inline">\(n \times n\)</span>, <span class="math inline">\(\mathbf A\)</span>.</p></li>
+<li><p>Es un algoritmo tan sencillo, que sorprende que sea tan efectivo.</p></li>
+<li><p>Primero se toma <span class="math inline">\(\mathbf A = \mathbf A^{(0)}\)</span> como matriz inicial.</p></li>
+<li><p>Luego, para cada <span class="math inline">\(k = 1, 2, \cdots\)</span>:</p>
+<ol type="1">
+<li>Realizar la factorización QR de <span class="math inline">\(\mathbf A^{(k-1)}\)</span> para obtener <span class="math inline">\(\mathbf Q^{(k-1)}\)</span> y <span class="math inline">\(\mathbf R^{(k-1)}\)</span> (es decir: <span class="math inline">\(\mathbf A^{(k-1)}=\mathbf Q^{(k-1)}\mathbf R^{(k-1)}\)</span>).</li>
+<li>Calcular la siguiente matriz del proceso iterativo como: <span class="math inline">\(\mathbf A^{(k)} = \mathbf R^{(k-1)}\mathbf Q^{(k-1)}\)</span></li>
+</ol></li>
+<li><p>La sucesión <span class="math inline">\(\mathbf A^{(k)}\)</span> converge a una matriz triangular cuyos elementos diagonales son los autovalores de <span class="math inline">\(\mathbf A\)</span>.</p></li>
+<li><p>La idea detrás de este método es la siguiente: las sucesivas matrices <span class="math inline">\(\mathbf A^{(k)}\)</span> son semejantes (revisar sección de propiedades) y, por lo tanto, tienen los mismos autovalores. Además, estas operaciones van transformando de a poco a las matrices <span class="math inline">\(\mathbf A^{(k)}\)</span> en triangulares superiores y sabemos que en tales matrices los autovalores son los elementos diagonales (repasar las propiedades enunciadas al inicio del apunte).</p></li>
+<li><p>Para darnos cuenta de que las matrices <span class="math inline">\(\mathbf A^{(k)}\)</span> son semejantes debemos notar:</p></li>
+</ul>
+<p><span class="math display">\[
+\mathbf A^{(k)} = \mathbf R^{(k-1)}\mathbf Q^{(k-1)} =
+\underbrace{{\mathbf Q^{(k-1)}}^{-1} \mathbf Q^{(k-1)}}_{\mathbf I}\mathbf R^{(k-1)}\mathbf Q^{(k-1)} =
+{\mathbf Q^{(k-1)}}^{-1}  \mathbf A^{(k-1)}\mathbf Q^{(k-1)}
+´\implies A^{(k)} \text{ y } A^{(k-1)} \text{ son semejantes}
+\]</span></p>
+<ul>
+<li><p>¿Y los autovectores?</p>
+<ul>
+<li>Si la matriz es simétrica, los autovectores son las columnas de <span class="math inline">\(\prod_{k=0} \mathbf Q^{(k)}\)</span>.</li>
+<li>Si la matriz no es simétrica, esta forma presentada del algoritmo, que es la más sencilla posible y por eso a veces es llamado “el algoritmo QR puro” no entrega los autovectores, pero hay otras variantes que sí lo hacen.</li>
+</ul></li>
+</ul>
+<!-- Esto tomado de:  -->
+<!-- https://stats.stackexchange.com/questions/20643/finding-matrix-eigenvectors-using-qr-decomposition 
+https://www.youtube.com/watch?v=1kw8bpA9QmQ
+-->
+<ul>
+<li>El proceso iterativo debe detenerse cuando se haya llegado a una matriz triangular superior (las entradas del triángulo inferior sin la diagonal deberían ser cero o muy cercanas). Para implementar un criterio más sencillo, podemos detenernos cuando la distancia entre los vectores formados por los elementos diagonales de la matriz sea tan pequeña como se desee.</li>
+</ul>
+<!-- One may prove convergence to an upper triangular matrix, if |λ𝑖|≠|λ𝑗| for all eigenvalues λ𝑖,λ𝑗 of 𝐴. 
+https://math.stackexchange.com/questions/3464295/what-is-explicit-and-implicit-qr-algorithms-for-symmetric-and-non-symmetric-matr
+-->
+<ul>
+<li><p>Ejemplo:</p>
+<p><span class="math display">\[
+  \mathbf A =
+  \begin{bmatrix}
+  1 &amp; -2 &amp; 1 \\
+  -1 &amp; 3 &amp; 2 \\
+  1 &amp; -1 &amp; -4
+  \end{bmatrix}
+  \]</span></p>
+<p>Llamamos a esta matriz con <span class="math inline">\(\mathbf A^{(0)}\)</span> y ya vimos que su factorización QR es:</p>
+<p><span class="math display">\[
+  \mathbf Q^{(0)} =
+  \begin{bmatrix}
+  -\frac{1}{\sqrt 3} &amp; 0                  &amp; -\frac{2}{\sqrt 6} \\
+  \frac{1}{\sqrt 3} &amp; -\frac{1}{\sqrt 2}  &amp; -\frac{1}{\sqrt 6} \\
+  -\frac{1}{\sqrt 3} &amp; -\frac{1}{\sqrt 2} &amp; \frac{1}{\sqrt 6}
+  \end{bmatrix}
+  \qquad
+  \mathbf R^{(0)} =
+      \begin{bmatrix}
+  -\sqrt 3 &amp; 2\sqrt 3  &amp; \frac{5\sqrt 3}{3} \\
+  0        &amp; -\sqrt 2  &amp;  \sqrt 2 \\
+  0        &amp; 0         &amp; -\frac{\sqrt{96}}{3}
+  \end{bmatrix}
+  \]</span></p>
+<p>Con lo cual, la siguiente matriz de la sucesión es:</p>
+<p><span class="math display">\[
+  \mathbf A^{(1)} = \mathbf R^{(0)}\mathbf Q^{(0)}=
+  \begin{bmatrix}
+  -\frac{4}{3} &amp; -\frac{11}{6} \sqrt 6                  &amp; -\frac{5}{6}\sqrt2 \\
+  -\frac{2}{3}\sqrt 6 &amp; 0  &amp; \frac{2}{3} \sqrt 3 \\
+  \frac{4}{3} \sqrt 2 &amp; \frac{4}{3} \sqrt 3 &amp; -\frac{4}{3}
+  \end{bmatrix}
+  \]</span></p>
+<p>Verificamos en Python este y los siguientes pasos:</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="op">-</span><span class="dv">2</span>, <span class="dv">1</span>],</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>              [<span class="op">-</span><span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>],</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>              [<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">4</span>]])</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Iteración 1</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>Q0, R0 <span class="op">=</span> qr(A)</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>A1 <span class="op">=</span> np.dot(R0, Q0)</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(A1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[ 1.3333 -4.4907  1.1785]
+ [-1.633  -0.      1.1547]
+ [ 1.8856  2.3094 -1.3333]]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Iteración 2</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>Q1, R1 <span class="op">=</span> qr(A1)</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>A2 <span class="op">=</span> np.dot(R1, Q1)</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(A2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[ 1.      2.8772  0.2349]
+ [ 4.0856 -1.2914  3.1605]
+ [-0.3759  0.3028  0.2914]]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Iteración 3</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>Q2, R2 <span class="op">=</span> qr(A2)</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>A3 <span class="op">=</span> np.dot(R2, Q2)</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(A3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[ 0.1495 -4.4805 -2.7609]
+ [-3.0529 -0.7539 -0.1445]
+ [ 0.0542  0.0489  0.6044]]</code></pre>
+</div>
+</div>
+<ul>
+<li>Si seguimos iterando vamos a ver que la matriz converge y en su diagonal tendremos a los autovalores.</li>
+<li>Usando la función provista que implementa este algoritmo vemos el resultado:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>rtdo <span class="op">=</span> algoritmo_qr(A)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>[<span class="bu">print</span>(keys, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>, value) <span class="cf">for</span> keys, value <span class="kw">in</span> rtdo.items()]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>convergencia 
+ True
+iteraciones 
+ 115
+autovalores 
+ [-4.      3.4142  0.5858]
+pasos 
+        i                                      autovalores_i       error_i
+0      0                                         [1, 3, -4]           NaN
+1      1  [1.3333333333333333, -1.300816253288535e-15, -...  4.027682e+00
+2      2  [0.999999999999999, -1.2913907284768211, 0.291...  2.102030e+00
+3      3  [0.14953271028037157, -0.7539198862276028, 0.6...  1.053630e+00
+4      4  [-0.3840000000000031, -0.19584605115074222, 0....  7.724674e-01
+..   ...                                                ...           ...
+111  111  [-3.999999941718327, 3.4142135040914274, 0.585...  1.789869e-07
+112  112  [-4.000000049746487, 3.4142136121195867, 0.585...  1.527749e-07
+113  113  [-3.9999999575386904, 3.4142135199117907, 0.58...  1.304015e-07
+114  114  [-4.000000036242971, 3.4142135986160715, 0.585...  1.113047e-07
+115  115  [-3.9999999690646675, 3.4142135314377686, 0.58...  9.500447e-08
+
+[116 rows x 3 columns]
+[None, None, None, None]</code></pre>
+</div>
+</div>
+<ul>
+<li>Lo comparamos con el resultado de la función <code>eig()</code> de Python:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>autovalores, autovectores <span class="op">=</span> eig(A)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Autovalores:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Autovalores:</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(autovalores)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[-4.    +0.j  0.5858+0.j  3.4142+0.j]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Autovectores:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Autovectores:</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(autovectores)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[ 0.3015  0.9511 -0.6715]
+ [ 0.3015  0.2711  0.7169]
+ [-0.9045  0.1483 -0.1873]]</code></pre>
+</div>
+</div>
+<ul>
+<li><p>Al algoritmo QR “puro” definido en esta sección también se lo conoce como “impráctico” porque tiene algunas desventajas:</p>
+<ul>
+<li>La factorización QR en cada paso es costosa computacionalmente.</li>
+<li>La convergencia de las entradas subdiagonales a cero es lineal (convergencia lenta).</li>
+</ul></li>
+<li><p>Por eso se han propuesto algunas modificaciones que mejoran notablemente el desempeño del método:</p>
+<ul>
+<li>En primer lugar, se debe transformar a la matriz original <span class="math inline">\(\mathbf A\)</span> en otra similar (mismos autovalores) pero que sea <a href="https://es.wikipedia.org/wiki/Matriz_tridiagonal">tridiagonal</a> (se logra con el método de Householder) o que sea una <a href="https://es.wikipedia.org/wiki/Matriz_de_Hessenberg">matriz de Hessenberg</a>.</li>
+<li>Luego, en el proceso iteratvio, se debe usar un procedimiento de deflación cada vez que un elemento subdiagonal se hace 0 para disminuir la cantidad de cálculos.</li>
+<li>Y también se debe implementar una estrategia de cambios de filas y columnas (<em>shifted QR</em>) que acelera la convergencia.</li>
+</ul></li>
+<li><p>En este curso, no veremos estas variantes (están en el libro, que de hecho no presenta la forma simple que vimos acá).</p></li>
+</ul>
+</section>
+</section>
+<section id="descomposición-en-valores-singulares-dvs" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="descomposición-en-valores-singulares-dvs"><span class="header-section-number">5.4</span> Descomposición en valores singulares (DVS)</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.image <span class="im">import</span> imread</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><p>Una matriz rectangular <span class="math inline">\(\mathbf A\)</span> no puede tener un autovalor porque <span class="math inline">\(\mathbf {Ax}\)</span> y <span class="math inline">\(\mathbf x\)</span> son vectores de diferentes tamaños.</p></li>
+<li><p>Sin embargo, existen números que desempeñan un rol análogo al de los autovalores para las matrices no cuadradas.</p></li>
+<li><p>Se trata de los <strong>valores singulares</strong> de una matriz.</p></li>
+<li><p>La <strong>Descomposición en Valores Singulares</strong> (DVS, también llamada <em>SVD</em>, por las siglas de <em>Singular Value Decomposition</em>) es una factorización para matrices rectangulares que tiene numerosas aplicaciones, por ejemplo en compresión de imágenes y análisis de señales.</p></li>
+<li><p>En Estadística tiene gran importancia para tareas relacionadas con la reducción de dimensionalidad de grandes conjuntos de datos (tiene una vinculación directa con el Análisis de Componentes Principales, técnica que estudiarán en Análisis de Datos Multivariados). También se la puede utilizar para realizar ajustes por Mínimos Cuadrados.</p></li>
+</ul>
+<div class="alert alert-info">
+<p><strong>Teorema de Descomposición en Valores Singulares</strong>: una matriz rectangular <span class="math inline">\(\mathbf A\)</span> de dimensión <span class="math inline">\(m \times n\)</span> puede ser factorizada como:</p>
+<p><span class="math display">\[
+\mathbf A = \mathbf U \mathbf S \mathbf V^T
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><span class="math inline">\(\mathbf U\)</span> es una matriz ortogonal <span class="math inline">\(m \times m\)</span></li>
+<li><span class="math inline">\(\mathbf S\)</span> es una matriz diagonal <span class="math inline">\(m \times n\)</span> con elementos <span class="math inline">\(\sigma_i\)</span> (<span class="math inline">\(\mathbf s_{ij} = 0 \,\forall i \neq j\)</span>).</li>
+<li><span class="math inline">\(\mathbf V\)</span> es una matriz ortogonal <span class="math inline">\(n \times n\)</span></li>
+</ul>
+<p>Además:</p>
+<ul>
+<li>Los elementos diagonales de <span class="math inline">\(\mathbf S\)</span>, <span class="math inline">\(\sigma_i\)</span>, son llamados <strong>valores singulares</strong> de <span class="math inline">\(\mathbf A\)</span>. Son tales que <span class="math inline">\(\sigma_1 \geq \sigma_2 \geq \cdots \sigma_k \geq 0\)</span>, con <span class="math inline">\(k=min\{m,n\}\)</span> y son iguales a las raíces cuadradas positivas de los autovalores no nulos de <span class="math inline">\(\mathbf A^T\mathbf A\)</span>.</li>
+<li>Las columnas de <span class="math inline">\(\mathbf V\)</span> son los autovectores ortonormales de <span class="math inline">\(\mathbf A^T\mathbf A\)</span> y se llaman <em>vectores singulares derechos</em> porque <span class="math inline">\(\mathbf {AV} = \mathbf U \mathbf S\)</span>.</li>
+<li>Las columnas de <span class="math inline">\(\mathbf U\)</span> son los autovectores ortonormales de <span class="math inline">\(\mathbf A\mathbf A^T\)</span> y se llaman <em>vectores singulares izquierdos</em> porque <span class="math inline">\(\mathbf {U}^T\mathbf {A} = \mathbf S \mathbf V^T\)</span>.</li>
+</ul>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Plots/U5/svd1.png" class="img-fluid" width="381"></p>
+</div>
+</div>
+<ul>
+<li>Esas tres últimas observaciones proporcionan una forma de obtener la DVS.</li>
+</ul>
+<section id="ejemplo" class="level3" data-number="5.4.1">
+<h3 data-number="5.4.1" class="anchored" data-anchor-id="ejemplo"><span class="header-section-number">5.4.1</span> Ejemplo</h3>
+<ul>
+<li>Vamos a buscar la DVS de la siguiente matriz haciendo los cálculos en Python:</li>
+</ul>
+<!-- este ejemplo lo descarto porque por el ordenamiento y signo no se puede reproducir con UxSxVT -->
+<!--    $$ -->
+<!--    \mathbf A = -->
+<!--    \begin{bmatrix} -->
+<!--    1 & 0 & 1 \\ -->
+<!--    0 & 1 & 0 \\ -->
+<!--    1 & 1 & 0  \\ -->
+<!--    0 & 1 & 0 \\ -->
+<!--    0 & 1 & 1  -->
+<!--    \end{bmatrix} -->
+<!--    $$ -->
+<p><span class="math display">\[
+\mathbf A =
+\begin{bmatrix}
+4 &amp; 2 &amp; 0 \\
+1 &amp; 5 &amp; 6
+\end{bmatrix}
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.array([[<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">0</span>],</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>              [<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">6</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Para generar la matriz diagonal <span class="math inline">\(\mathbf S\)</span>, buscamos los valores singulares que son las raíces positivas de los autovalores no nulos de <span class="math inline">\(\mathbf A^T\mathbf A\)</span>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>ATA <span class="op">=</span> A.T <span class="op">@</span> A</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ATA)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[17 13  6]
+ [13 29 30]
+ [ 6 30 36]]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>autovalores, autovectores <span class="op">=</span> np.linalg.eig(ATA)</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>val_sing <span class="op">=</span> np.sqrt(autovalores)</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(val_sing)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[8.1387 3.97   0.    ]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ponemos a los valores singulares en la matriz S</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>S <span class="op">=</span> np.zeros((A.shape[<span class="dv">0</span>], A.shape[<span class="dv">1</span>]))</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">min</span>(A.shape)):</span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>    S[i, i] <span class="op">=</span> val_sing[i]</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(S)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[8.1387 0.     0.    ]
+ [0.     3.97   0.    ]]</code></pre>
+</div>
+</div>
+<ul>
+<li>Las columnas de <span class="math inline">\(\mathbf V\)</span> son los autovectores ortonormales de <span class="math inline">\(\mathbf A^T\mathbf A\)</span>:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>V <span class="op">=</span> autovectores</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(V.T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[-0.26   -0.6592 -0.7056]
+ [-0.8913 -0.1172  0.438 ]
+ [ 0.3714 -0.7428  0.5571]]</code></pre>
+</div>
+</div>
+<ul>
+<li>Las columnas de <span class="math inline">\(\mathbf U\)</span> son los autovectores ortonormales de <span class="math inline">\(\mathbf A\mathbf A^T\)</span>:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>AAT <span class="op">=</span> A <span class="op">@</span> A.T</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>autovalores, autovectores <span class="op">=</span> np.linalg.eig(AAT)</span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(autovalores)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[15.7611 66.2389]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Los necesitamos ordenados de mayor a menor</span></span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>indices <span class="op">=</span> np.argsort(autovalores)[::<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>autovalores <span class="op">=</span> autovalores[indices]</span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(autovalores)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[66.2389 15.7611]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>U <span class="op">=</span> autovectores[:, indices] <span class="co"># reordenamos de la misma forma los autovectores</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(U)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[-0.2898 -0.9571]
+ [-0.9571  0.2898]]</code></pre>
+</div>
+</div>
+<ul>
+<li>Con los resultados obtenidos, podemos verificar que <span class="math inline">\(\mathbf A = \mathbf U \mathbf S \mathbf V^T\)</span>:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(A)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[4 2 0]
+ [1 5 6]]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(U <span class="op">@</span> S <span class="op">@</span> V.T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[ 4.  2. -0.]
+ [ 1.  5.  6.]]</code></pre>
+</div>
+</div>
+<ul>
+<li>Esta no es la forma más eficiente ni robusta de obtener la descomposición.</li>
+<li>Es sensible al ordenamiento de los autovalores y a los signos de los autovectores de <span class="math inline">\(\mathbf A^T\mathbf A\)</span>: y de <span class="math inline">\(\mathbf A\mathbf A^T\)</span>, que se obtienen de forma independiente entre sí.</li>
+<li>Por eso, en debemos utilizar programas creados específicametne para este fin.</li>
+<li>Python tiene una función que se encarga de aplicar esto: <code>np.linalg.svd()</code>.</li>
+<li>Debemos notar que devuelve directamente la transpuesta de <span class="math inline">\(V\)</span>.</li>
+</ul>
+<!-- , sin embargo, que como en este ejemplo la matriz es de $5 \times 3$, R no reporta las últimas dos columnas de $\mathbf U$. Las mismas no son útiles porque en la multiplicación matricial sus elementos se multiplican con los de las últimas dos filas de $\mathbf S$ que son nulas: -->
+<div class="cell">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>U, val_sing, VT <span class="op">=</span> np.linalg.svd(A, full_matrices<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matriz U:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Matriz U:</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(U)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[ 0.2898  0.9571]
+ [ 0.9571 -0.2898]]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Valores singulares:"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Valores singulares:</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(val_sing)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[8.1387 3.97  ]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>S <span class="op">=</span> np.zeros((A.shape[<span class="dv">0</span>], A.shape[<span class="dv">1</span>]))</span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">min</span>(A.shape)):</span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>    S[i, i] <span class="op">=</span> val_sing[i]</span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Matriz S (valores singulares):"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Matriz S (valores singulares):</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(S)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[8.1387 0.     0.    ]
+ [0.     3.97   0.    ]]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Matriz VT (transpuesta de V):"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Matriz VT (transpuesta de V):</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(VT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[ 0.26    0.6592  0.7056]
+ [ 0.8913  0.1172 -0.438 ]
+ [ 0.3714 -0.7428  0.5571]]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Comprobamos que se reconstruye la matriz A</span></span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>U <span class="op">@</span> S <span class="op">@</span> VT</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([[ 4.,  2., -0.],
+       [ 1.,  5.,  6.]])</code></pre>
+</div>
+</div>
+</section>
+<section id="aplicaciones" class="level3" data-number="5.4.2">
+<h3 data-number="5.4.2" class="anchored" data-anchor-id="aplicaciones"><span class="header-section-number">5.4.2</span> Aplicaciones</h3>
+<ul>
+<li><p>La razón de la importancia de la DVS en muchas aplicaciones es que nos permite captar las características más importantes de una matriz <span class="math inline">\(m \times n\)</span> (en muchos casos, con <span class="math inline">\(m\)</span> mucho mayor que <span class="math inline">\(n\)</span>) usando una matriz que, a menudo, es de tamaño significativamente más pequeño.</p></li>
+<li><p>El hecho de que los valores singulares están en la diagonal de <span class="math inline">\(\mathbf S\)</span> en orden decreciente implica que al hacer el producto <span class="math inline">\(\mathbf U \mathbf S \mathbf V^T\)</span> para reconstruir a <span class="math inline">\(\mathbf A\)</span>, quienes aportan la mayor parte de la información son las primeras columnas de cada una de estas matrices.</p></li>
+<li><p>Entonces para reconstruir <span class="math inline">\(\mathbf A\)</span> de manera exacta necesitamos estas tres matrices completas, pero para construir una muy buena aproximación a <span class="math inline">\(\mathbf A\)</span> nos alcanza con hacer el mismo producto usando sólo sus primeras <span class="math inline">\(k\)</span> columnas:</p></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Plots/U5/svd2.png" class="img-fluid" width="408"></p>
+</div>
+</div>
+<ul>
+<li><p>¡Esto es un resultado impresionante! Significa que a un gran conjunto de datos lo podemos almacenar con mucho menos espacio mediante esas matrices reducidas, con muy poca pérdida de información.</p></li>
+<li><p>No hay una forma anticipada de saber con cuántos valores singulares (<span class="math inline">\(k\)</span>) alcanza para tener una buena aproximación, eso depende de cada caso<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p></li>
+<li><p>La matriz <span class="math inline">\(\mathbf A\)</span> de dimensión <span class="math inline">\(m \times n\)</span> requiere <span class="math inline">\(mn\)</span> registros para su almacenamiento.</p></li>
+<li><p>Sin embargo, la matriz <span class="math inline">\(\mathbf A_k\)</span>, que aproxima a <span class="math inline">\(\mathbf A\)</span> y también es dimensión <span class="math inline">\(m \times n\)</span>, sólo requiere de <span class="math inline">\(k(m+n+1)\)</span> registros para su almacenamiento (<span class="math inline">\(mk\)</span> para <span class="math inline">\(\mathbf U_k\)</span>, <span class="math inline">\(k\)</span> para <span class="math inline">\(\mathbf S_k\)</span> y <span class="math inline">\(nk\)</span> para <span class="math inline">\(\mathbf V_k\)</span>).</p></li>
+<li><p>Hacer las cuentas para ver cuánto se gana de “espacio” si <span class="math inline">\(m=100\)</span>, <span class="math inline">\(n=10\)</span> y <span class="math inline">\(k=4\)</span>…</p></li>
+<li><p>Esto se conoce como <strong>compresión de datos</strong> y de aquí que la DVS está tan relacionada con el Análisis de Componentes Principales, una técnica de reducción de la dimensionalidad.</p></li>
+<li><p>Para ponernos un poco más rigurosos, vale comentar que la matriz <span class="math inline">\(\mathbf A_k = \mathbf U_k \mathbf S_k \mathbf V_k^T\)</span> es de rango <span class="math inline">\(k\)</span> y se demuestra que es la mejor aproximación mediante una matriz de rango <span class="math inline">\(k &lt; n\)</span> de la matriz de datos <span class="math inline">\(\mathbf A\)</span> (posiblemente de rango <span class="math inline">\(n\)</span>), en el sentido que es la que minimiza el error cuadrático de la predicción<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p></li>
+<li><p>Para finalizar vamos a ver un ejemplo de DVS aplicado al procesamiento de imágenes.</p></li>
+<li><p>¿Qué tienen que ver las imágenes con nuestros conocimientos de matrices? Toda imagen digital se representa en la computadora como una matriz de <a href="https://es.wikipedia.org/wiki/P%C3%ADxel">píxeles</a>, es decir, como un gran conjunto de puntitos ordenados en forma de matriz con filas y columnas, cada uno de un color en particular, que visualizados juntos dan lugar a la figura. Por lo tanto, una imagen se puede representar por una matriz donde cada celda tiene información acerca del color del píxel correspondiente:</p></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<p><img src="Plots/U5/pixeles.png" class="img-fluid quarto-figure-center" style="width:60.0%"></p>
+</div>
+</div>
+<ul>
+<li><p>Existen códigos para representar a los distintos colores, por ejemplo, en el sistema hexadecimal, el código para el rojo es <em>FF0000</em>. Entonces, en la matriz que representa a una imagen digital está el valor <em>FF0000</em> por cada píxel rojo que la misma tenga. En ese caso, la matriz es de tipo caracter. Hay otros tipos de representación de colores que usan arreglos tridimensionales numéricos para indicar <em>cuánto</em> de rojo, de azúl y de verde tiene un píxel, ya que combinando esos tres se pueden formar el resto de los colores.</p></li>
+<li><p>Cuando se trabaja con imágenes en escala de grises, la cuestión es más sencilla. En cada celda de la matriz hay un número que varía entre 0 y 1. Una celda con un valor de 0 indica un píxel negro, mientras que una celda con un valor de 1 indica un pixel blanco. Es decir, un valor cercano a 0 es un gris bien oscuro, mientras que un valor cercano a 1 es un gris bien clarito. Por ejemplo:</p></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<p><img src="Plots/U5/representa.png" class="img-fluid quarto-figure-center" style="width:40.0%"></p>
+</div>
+</div>
+<ul>
+<li><p>Con el siguiente código leemos la imagen del Monumento Nacional a la Bandera mostrada anteriormente y la convertimos en escala de grises:</p>
+<ol type="1">
+<li><p>Cargar una imagen desde el archivo “monu.png” utilizando la función imread y representarla con la matriz <code>A</code>.</p></li>
+<li><p>Convertirla a escala de grises. Para esto, se calcular la media a lo largo del último eje de la matriz A utilizando la función <code>np.mean</code> de NumPy con el argumento -1. Esto es equivalente a tomar el promedio a través de los canales de color en una imagen. Cuando se trabaja con imágenes, el último eje suele representar los canales de color (por ejemplo, Rojo, Verde, Azul en una imagen RGB). Al tomar el promedio a lo largo del último eje, se obtiene una imagen en escala de grises en la que cada píxel representa el valor promedio de los canales de color en el píxel correspondiente. Por lo tanto, <code>A</code> queda como la matriz de valores entre 0 y 1 que que representa a la imagen en escala de grises.</p></li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Lectura de la imagen</span></span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> imread(<span class="st">"Plots/U5/monu.png"</span>)</span>
+<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertir a grises</span></span>
+<span id="cb99-5"><a href="#cb99-5" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> np.mean(A, <span class="op">-</span><span class="dv">1</span>) </span>
+<span id="cb99-6"><a href="#cb99-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-7"><a href="#cb99-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Explorarla un poco</span></span>
+<span id="cb99-8"><a href="#cb99-8" aria-hidden="true" tabindex="-1"></a>np.<span class="bu">max</span>(A)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.97647065</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>np.<span class="bu">min</span>(A)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.023529412</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>A</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([[0.1085, 0.1085, 0.1085, ..., 0.1203, 0.1203, 0.119 ],
+       [0.1124, 0.1124, 0.1085, ..., 0.1203, 0.1203, 0.119 ],
+       [0.1163, 0.1085, 0.1085, ..., 0.1203, 0.1203, 0.119 ],
+       ...,
+       [0.102 , 0.1137, 0.1242, ..., 0.4314, 0.4235, 0.4052],
+       [0.1033, 0.1124, 0.132 , ..., 0.4235, 0.4157, 0.4   ],
+       [0.1072, 0.1111, 0.1373, ..., 0.4549, 0.4353, 0.4196]], dtype=float32)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficarla</span></span>
+<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a>plt.imshow(A, cmap<span class="op">=</span><span class="st">'gray'</span>)</span>
+<span id="cb105-3"><a href="#cb105-3" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(-0.5, 519.5, 768.5, -0.5)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="05_autovalores_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ul>
+<li>Siendo la imagen de dimensión <span class="math inline">\(m=769 \times n=560\)</span>, se requiere de <span class="math inline">\(769 \times 520 = 399880\)</span> valores para su registro.</li>
+<li>¿Será posible aplicarle una DVS para poder almacenarla con muchos menos valores, pero elegidos de forma tal que los mismos sirvan para reconstruir una buena aproximación de la imagen? Probemos…</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Aplicar DVS</span></span>
+<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a>U, val_sing, VT <span class="op">=</span> np.linalg.svd(A, full_matrices <span class="op">=</span> <span class="va">False</span>)</span>
+<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a>S <span class="op">=</span> np.diag(val_sing)</span>
+<span id="cb108-4"><a href="#cb108-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-5"><a href="#cb108-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Reconstruir la imagen de manera exacta (salvo errores de redondeo)</span></span>
+<span id="cb108-6"><a href="#cb108-6" aria-hidden="true" tabindex="-1"></a>A2 <span class="op">=</span> U <span class="op">@</span> S <span class="op">@</span> VT</span>
+<span id="cb108-7"><a href="#cb108-7" aria-hidden="true" tabindex="-1"></a>plt.imshow(A2, cmap<span class="op">=</span><span class="st">'gray'</span>)</span>
+<span id="cb108-8"><a href="#cb108-8" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(-0.5, 519.5, 768.5, -0.5)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="05_autovalores_files/figure-html/unnamed-chunk-24-3.png" class="img-fluid" style="width:100.0%"></p>
+</div>
+</div>
+<!-- - Nota: con `full_matrices = False`, devuelve $U$ con menos columnas, las que realmente se usan (tantos como valores singulares no nulos haya).  -->
+<ul>
+<li>Ahora vamos qué sucede si empleamos <span class="math inline">\(k=20\)</span> valores singulares. En lugar de necesitar <span class="math inline">\(399880\)</span> valores para almacenar la imagen, esto nos permitirá emplear sólo <span class="math inline">\(k(m+n+1) = 20(520+769+1)=25800\)</span> (un 6.45% del original).</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Reconstruir la imagen usando menos información</span></span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> U[:, :k] <span class="op">@</span> S[:k, :k] <span class="op">@</span> VT[:k, :]</span>
+<span id="cb111-4"><a href="#cb111-4" aria-hidden="true" tabindex="-1"></a>plt.imshow(img, cmap<span class="op">=</span><span class="st">'gray'</span>)</span>
+<span id="cb111-5"><a href="#cb111-5" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(-0.5, 519.5, 768.5, -0.5)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="05_autovalores_files/figure-html/unnamed-chunk-25-5.png" class="img-fluid" style="width:100.0%"></p>
+</div>
+</div>
+<ul>
+<li>Vemos que con una cantidad de registros que representa tan sólo un 6.45% de la cantidad original, se logra reconstruir una imagen que conserva todos los rasgos principales.</li>
+<li>A continuación se presenta el resultado empleando distintos valores de <span class="math inline">\(k\)</span>. Calcular en cada caso cuántos registros se necesitan.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a>valores_k <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">200</span>]</span>
+<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(valores_k)):</span>
+<span id="cb114-4"><a href="#cb114-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-5"><a href="#cb114-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Establecer k</span></span>
+<span id="cb114-6"><a href="#cb114-6" aria-hidden="true" tabindex="-1"></a>    k <span class="op">=</span> valores_k[i]</span>
+<span id="cb114-7"><a href="#cb114-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb114-8"><a href="#cb114-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calcular la aproximación de la imagen</span></span>
+<span id="cb114-9"><a href="#cb114-9" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> U[:, :k] <span class="op">@</span> S[:k, :k] <span class="op">@</span> VT[:k, :]</span>
+<span id="cb114-10"><a href="#cb114-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb114-11"><a href="#cb114-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Mostrar la aproximación de la imagen en escala de grises</span></span>
+<span id="cb114-12"><a href="#cb114-12" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">3</span>, <span class="dv">2</span>, i<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="cb114-13"><a href="#cb114-13" aria-hidden="true" tabindex="-1"></a>    plt.imshow(img, cmap<span class="op">=</span><span class="st">'gray'</span>)</span>
+<span id="cb114-14"><a href="#cb114-14" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb114-15"><a href="#cb114-15" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f'k = </span><span class="sc">{</span>k<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb114-16"><a href="#cb114-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-17"><a href="#cb114-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="05_autovalores_files/figure-html/unnamed-chunk-26-7.png" class="img-fluid" style="width:100.0%"></p>
+</div>
+</div>
+<ul>
+<li>Para determinar un buen valor de <span class="math inline">\(k\)</span> es útil graficar los valores singulares en orden decreciente. Se puede elegir el valor para el cual se forma una especie de “codo”, a partir del cual los valores singulares son similares entre sí y tienen un valor pequeño con respecto a los primeros. En el caso de la imagen del monumento, parece que <span class="math inline">\(k=20\)</span> estaría bien.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Trazar los valores singulares en función de k</span></span>
+<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">range</span>(<span class="dv">520</span>) , val_sing, marker<span class="op">=</span><span class="st">'o'</span>, color<span class="op">=</span><span class="st">'b'</span>)</span>
+<span id="cb115-3"><a href="#cb115-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"k"</span>)</span>
+<span id="cb115-4"><a href="#cb115-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Valores singulares"</span>)</span>
+<span id="cb115-5"><a href="#cb115-5" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb115-6"><a href="#cb115-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="05_autovalores_files/figure-html/unnamed-chunk-27-9.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ul>
+<li>En otras aplicaciones, aplicar una DVS a una imagen puede ser necesario para poder borrar “ruido”. Por ejemplo, si se trata de una fotografía que tal vez se tomó a gran distancia, como una imagen satelital, es probable que la misma incluya ruido, es decir, datos que no representan verdaderamente la imagen, sino el deterioro de ésta mediante partículas atmosféricas, la calidad de las lentes, procesos de reproducción, etc. Los datos de ruido se incorporan en los datos de la matriz <span class="math inline">\(\mathbf A\)</span>, pero con suerte este ruido es mucho menos significativo que la verdadera imagen. Se espera que los valores singulares más grandes representen a la verdadera imagen y que los más pequeños, los más cercanos a cero, sean las contribuciones del ruido. Al realizar la DVS que solamente retiene esos valores singulares por encima de cierto umbral, podríamos ser capaces de eliminar la mayor parte del ruido y, en realidad, obtener una imagen que no sólo sea de menor tamaño sino también una representación más clara de la superficie.</li>
+</ul>
+</section>
+<section id="no-está-de-más-saber-que" class="level3" data-number="5.4.3">
+<h3 data-number="5.4.3" class="anchored" data-anchor-id="no-está-de-más-saber-que"><span class="header-section-number">5.4.3</span> No está de más saber que…</h3>
+<ul>
+<li><p>Ya quedó claro que DVS será importante a la hora de estudiar Análisis de Datos Multivariados.</p></li>
+<li><p>En esta sección vamos a mencionar un par de detalles adicionales que son un nexo entre lo que han estudiado de Álgebra Lineal, estamos aplicando ahora mediante Métodos Numéricos y verán su utilidad en Análisis de Datos Multivariados:</p>
+<ol type="1">
+<li>Un poquito más arriba mencionamos al rango de una matriz. Recordamos que el rango de una matriz es el número máximo de vectores fila o columna que linealmente independientes. Si <span class="math inline">\(\mathbf A_{m\times n}\)</span>, <span class="math inline">\(rg(\mathbf A) \leq min(m, n)\)</span>. Si <span class="math inline">\(rg(\mathbf A) = min(m, n)\)</span>, se dice que la matriz es de rango completo. En Estadística, el rango de una matriz de datos nos indica la dimensión real necesaria para representar el conjunto de datos, o el número real de variables distintas que disponemos. Analizar el rango de una matriz de datos es la clave para reducir el número de variables sin pérdida de información.</li>
+<li>También ha aparecido en la DVS la matriz <span class="math inline">\(\mathbf A^TA\)</span>. Pasó por ahí casi desapercibida, pero esta matriz es fundamental en Estadística. Si <span class="math inline">\(\mathbf A\)</span> es nuestra matriz de datos, que generalmente denotamos con <span class="math inline">\(\mathbf X\)</span>, entonces <span class="math inline">\(\mathbf X^T \mathbf X\)</span> es proporcional a la <strong>matriz de variancias y covariancias</strong>. Su <strong>determinante</strong> es una medida global de la independencia entre las variables. A mayor determinante, mayor independencia. Para que la DVS pueda hacer una buena compresión con pocos valores singulares <span class="math inline">\(k\)</span>, se necesita que las variables estén correlacionadas.</li>
+<li>La <strong>traza</strong> de una matriz es una medida global de su tamaño que se obtiene sumando sus elementos diagonales. Por ejemplo, la traza de una matriz de variancias y covariancias es la suma de todas las variancias de las variables. Entonces, la suma de los elementos diagonales es una medida de variabilidad que, a diferencia del determinante, no tiene en cuenta las relaciones entre las variables.</li>
+</ol></li>
+</ul>
+
+
+</section>
+</section>
+<aside id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Esta condición es equivalente a decir que la matriz <span class="math inline">\(\mathbf A\)</span> es <a href="https://es.wikipedia.org/wiki/Matriz_diagonalizable">“diagonalizable”</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>En realidad <span class="math inline">\(\mathbf x^{(0)}\)</span> debe verificar una condición teórica que se puede leer al final de la página 433, pero en la práctica no lo podemos verificar y el método sencillamente funciona.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Para cuando vean Análisis de Componentes Principales, esto equivale a tener que elegir el número de componentes a utilizar.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Para más detalles se puede consultar el libro sobre Análisis Multivariado de Peña, página 168.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</aside>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    const typesetMath = (el) => {
+      if (window.MathJax) {
+        // MathJax Typeset
+        window.MathJax.typeset([el]);
+      } else if (window.katex) {
+        // KaTeX Render
+        var mathElements = el.getElementsByClassName("math");
+        var macros = [];
+        for (var i = 0; i < mathElements.length; i++) {
+          var texText = mathElements[i].firstChild;
+          if (mathElements[i].tagName == "SPAN") {
+            window.katex.render(texText.data, mathElements[i], {
+              displayMode: mathElements[i].classList.contains('display'),
+              throwOnError: false,
+              macros: macros,
+              fleqn: false
+            });
+          }
+        }
+      }
+    }
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        for (let i = 0; i < 2; i++) {
+          container.appendChild(note.children[i].cloneNode(true));
+        }
+        typesetMath(container);
+        return container.innerHTML
+      } else {
+        typesetMath(note);
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      typesetMath(note);
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./04_sistemasnolineales.html" class="pagination-link  aria-label=" &lt;span="" de="" sistemas="" ecuaciones="" no="" lineales="" y="" optimización&lt;="" span&gt;"="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Resolución de sistemas de ecuaciones no lineales y optimización</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./06_aprox_polin_parte1.html" class="pagination-link" aria-label="<span class='chapter-number'>6</span>&nbsp; <span class='chapter-title'>Aproximación polinomial - Parte 1: interpolación</span>">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Aproximación polinomial - Parte 1: interpolación</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
